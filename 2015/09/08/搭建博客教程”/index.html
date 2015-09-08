@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="github+hexo 搭建博客教程从开始着手到搞定用了2天的时间，中间遇到各种坑，终于搭建好了hexo。跟大家分享一下我的经验。针对Mac。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://SolaCode.github.io/2015/09/08/搭建博客教程”/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="github+hexo 搭建博客教程从开始着手到搞定用了2天的时间，中间遇到各种坑，终于搭建好了hexo。跟大家分享一下我的经验。针对Mac。">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2015.56.59.png">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/UKF]PD8[4(_L06H$6P_TG7.jpg">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2016.37.42.png">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2017.14.38.png">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/q.jpg">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2020.53.25.png">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2021.05.33.png">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2021.33.29.png">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2021.29.58.png">
+<meta property="og:image" content="http://SolaCode.github.io/file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2021.50.24.png">
+<meta property="og:updated_time" content="2015-09-08T14:20:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hexo">
+<meta name="twitter:description" content="github+hexo 搭建博客教程从开始着手到搞定用了2天的时间，中间遇到各种坑，终于搭建好了hexo。跟大家分享一下我的经验。针对Mac。">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="https://avatars1.githubusercontent.com/u/9996399?v=3&s=460">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://avatars1.githubusercontent.com/u/9996399?v=3&amp;s=460" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">SolaCode</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/#" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">每天都是新的开始，如果有梦想，从现在就开始为之努力。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">SolaCode</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="https://avatars1.githubusercontent.com/u/9996399?v=3&amp;s=460" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">SolaCode</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-搭建博客教程”" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/08/搭建博客教程”/" class="article-date">
+  	<time datetime="2015-09-08T14:20:06.000Z" itemprop="datePublished">2015-09-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="github+hexo_搭建博客教程">github+hexo 搭建博客教程</h1><p>从开始着手到搞定用了2天的时间，中间遇到各种坑，终于搭建好了hexo。跟大家分享一下我的经验。针对Mac。<br><a id="more"></a></p>
+<p>前段时间一直想搭建自己的博客，由于自己有两个要求，一需要托管在github（之前有一些项目在github上，对git比较熟悉），二比较倾向于Markdown（语法简洁明了、学习容易，而且功能比纯文本更强），所以自然选择了hexo。</p>
+<p>从开始着手到搞定用了2天的时间，中间遇到各种坑，终于搭建好了hexo。跟大家分享一下我的经验。</p>
+<h2 id="正文">正文</h2><p>备注：我的hexo版本是3.1.1，而且教程是针对Mac的。</p>
+<h3 id="1，安装git">1，安装git</h3><h4 id="（1）安装Xcode自带git，这个不多说">（1）安装Xcode自带git，这个不多说</h4><h4 id="（2）我用的是类似于_Homebrew_管理器来安装的。遇到一些问题也一并说说。">（2）我用的是类似于 Homebrew 管理器来安装的。遇到一些问题也一并说说。</h4><p><code>$ sudo brew install git</code></p>
+<p>如果安装成功，检查是否能用</p>
+<p><code>$ git</code></p>
+<p>如果出现错误：</p>
+<p><img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2015.56.59.png" alt="图片"></p>
+<p>说明Terminal 可以在 $PATH 环境变量中没有找到git，所以需要配置。</p>
+<p>打开安装目录，类似：</p>
+<p><code>$ cd /usr/local/Cellar/git/2.1.2</code></p>
+<p><code>$ open ~/.bash_profile</code></p>
+<p>在bash_profile文件$PATH 环境变量中添加git/usr/local/Cellar/git/2.1.2/bin/git（当然这是根据自己安装的路径）</p>
+<p><img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/UKF]PD8[4(_L06H$6P_TG7.jpg" alt=""></p>
+<p><code>$ source ~/.bash_profile</code></p>
+<p>使对bash_profile文件的修改立即生效。</p>
+<p>用<code>$ which git</code>再检查一次，如果输出是/usr/bin/git就对了。</p>
+<p><strong>注意</strong>：如果大家安装的目录跟我不同，直接将/usr/local/Cellar改成自己的目录即可，我的git版本是2.1.2</p>
+<h3 id="2，申请github">2，申请github</h3><p>这个我就不啰嗦了，在<a href="https://github.com/" target="_blank" rel="external">github官网</a>上直接按步骤就行。</p>
+<p>另外，申请好后，可以配置一下SSH Keys。</p>
+<h4 id="SSH_Key生成步骤：">SSH Key生成步骤：</h4><ol>
+<li><code>$ ssh-keygen</code>,然后连续敲3次回车就可以了，生成的SSH key文件保存在中～/.ssh/id_rsa.pub。</li>
+<li>用文本编辑器打开id_rsa.pub文件，拷贝.ssh/id_rsa.pub文件内的所有内容，将它粘帖到github帐号管理中的添加SSH key界面中。</li>
+</ol>
+<h4 id="SSH_Key添加步骤：">SSH Key添加步骤：</h4><ol>
+<li>登录github</li>
+<li>点击右上方的Accounting settings图标</li>
+<li>选择 SSH key</li>
+<li>点击 Add SSH key</li>
+</ol>
+<p>SSH Keys也可以不配置，缺点：</p>
+<ol>
+<li>每天提交的时候需要写账号和密码。</li>
+<li>使用git clone命令从github上同步github上的代码库时，如果使用SSH链接，系统会报错：</li>
+</ol>
+<p><img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2016.37.42.png" alt=""></p>
+<p>配置完SSH Keys再设置一个全局变量<br><code>$ git config --global user.name &quot;Your Name&quot;</code><br><code>$ git config --global user.email &quot;email@example.com</code><br>你github的用户名和申请邮箱。</p>
+<h3 id="3，安装Node">3，安装Node</h3><h4 id="安装步骤：">安装步骤：</h4><ol>
+<li><a href="http://nodejs.org/#download" target="_blank" rel="external">官网下载页面</a>下载。</li>
+<li>./configure</li>
+<li>make</li>
+<li>sudo make install</li>
+</ol>
+<h3 id="4，终于到安装Hexo">4，终于到安装Hexo</h3><p>git和node安装成功后才能安装Hexo</p>
+<p><code>$ npm install -g hexo</code></p>
+<p><strong>安装的工作终于到此结束！！</strong></p>
+<h3 id="5，开始用Hexo写第一篇博文">5，开始用Hexo写第一篇博文</h3><p>安装完成后，在你准备写博文的文件夹（例如：F:\Blog）下，初始化Hexo，Hexo 即会自动在目标文件夹建立网站所需要的所有文件。</p>
+<h4 id="初始化">初始化</h4><p><code>$ hexo init</code></p>
+<h4 id="安装依赖包">安装依赖包</h4><p><code>$ npm install</code></p>
+<h4 id="生成静态页面">生成静态页面</h4><p><code>$ hexo generate</code></p>
+<p><code>$ hexo g</code>也可以</p>
+<p><strong>但是发现有问题：</strong></p>
+<p><img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2017.14.38.png" alt=""></p>
+<p>google之后，发现原来是npm的版本问题</p>
+<p>修改package.json文件：</p>
+<p><img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/q.jpg" alt=""></p>
+<p>将中间的*全部改为0.1，就搞定了。</p>
+<h4 id="启动本地服务，进行文章预览调试">启动本地服务，进行文章预览调试</h4><p><code>$ hexo server</code></p>
+<p>然后浏览器中输入浏览器输入<a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a></p>
+<p>成功之后会出现：</p>
+<p><img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2020.53.25.png" alt="本地博客搭建成功"></p>
+<p>快捷键’ctrl + c’关闭server</p>
+<p>这样本地博客就搭建成功了，可以进行预览调试，但是只能自己看到，但是现在域名和服务器都是基于自己的电脑，其他人看不到。</p>
+<h4 id="将博客部署到github上面">将博客部署到github上面</h4><ol>
+<li>登录github后，将鼠标点击github右上角“+”号，在下拉菜单上，选择“New repository”项，填写库名称（名称格式：xxxxx.github.io，我的是SolaCode.github.io），点击“create repository”，即可完成创建库。</li>
+<li>修改配置文件，在自己建的文件夹(F:\Blog)下找到_config.yml文件，里面的author:和url:改成自己的就可以，然后翻到最下边，修改Deployment部分（很重要），如下图：<img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2021.05.33.png" alt=""></li>
+<li>执行下列指令即可完成部署。<br><code>$ hexo generate</code><br>每次修改完本地文件后，都要hexo generate才能保存。<br><code>$ hexo deploy</code><br>现在，属于自己的博客就完全搭建成功了，在浏览器访问 SolaCode.github.io 就能发布成功了！大家都可以观赏你的博客了！</li>
+</ol>
+<h4 id="新建博客">新建博客</h4><p>上面部署的是自动生成的博客，接下来，就可以自己新建了。命令如下：</p>
+<p>hexo new “postName” #新建文章</p>
+<p>hexo new page “pageName” #新建页面</p>
+<p>hexo generate #生成静态页面至public目录</p>
+<p>hexo server #开启预览访问端口（默认端口4000，’ctrl + c’关闭server）</p>
+<p>hexo deploy #将.deploy目录部署到GitHub</p>
+<p>帮助命令：</p>
+<p>hexo help  # 查看帮助</p>
+<p>hexo version  #查看Hexo的版本</p>
+<h3 id="6，美化博客">6，美化博客</h3><p>我说的美化主要是指主体的使用，我用的主题是<a href="https://github.com/litten/hexo-theme-yilia" target="_blank" rel="external">Yilia</a>，github上有很多好看的Hexo主题，都可以选择clone。我简单介绍下如何换主题。</p>
+<h4 id="如何换Hexo主题">如何换Hexo主题</h4><ol>
+<li>clone主题</li>
+<li>修改hexo根目录下的 _config.yml文件，修改文件中的theme部分。<br><img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2021.33.29.png" alt=""></li>
+<li>如果想修改头像可以直接在主题的_config.yml文件里面修改。我主要改了这两部分。<img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2021.29.58.png" alt=""></li>
+<li>更新<br><code>$ cd themes/yilia</code><br><code>git pull</code></li>
+<li><p>在Hexo根目录下部署提交</p>
+<p><code>$ hexo clean</code></p>
+<p><code>$ hexo generate</code></p>
+<p><code>$ hexo deploy</code></p>
+</li>
+<li>在浏览器访问<a href="https://SolaCode.github.io">https://SolaCode.github.io</a><br><img src="file:///Volumes/MAC/Users/Jackrex/ios/Blog/source/img/Screen%20Shot%202015-09-08%20at%2021.50.24.png" alt=""></li>
+</ol>
+<h3 id="7，收获">7，收获</h3><p>通过前面的教材，你会发现你已经掌握了Hexo的基本常用命令，如果只是用来写博客，差不多就够用了。</p>
+<p>下面说说我自己心得，在安装过程中，会遇到各种各样的问题，最重要的是有耐心，踩的坑，相信很多人都遇到过，网上有前辈们已经找到了解决方案，要善于利用google。</p>
+<h4 id="常用路径">常用路径</h4><ol>
+<li>文章在source/_posts，支持Markdown，我用的是用Mon打开。</li>
+<li>source/img中，可以放一些文章中需要插入的图片。</li>
+</ol>
+<h3 id="8，学习Markdown，记录每天的进步。">8，学习Markdown，记录每天的进步。</h3><p>下次我会分享Markdown的入门，还有基础语法。也会把这篇博文的源码粘出来，供大家参考。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/08/30/my-new-post/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">my new post</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="搭建博客教程”" data-title="" data-url="http://SolaCode.github.io/2015/09/08/搭建博客教程”/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 SolaCode
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
