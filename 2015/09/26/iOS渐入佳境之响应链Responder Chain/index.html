@@ -11,10 +11,10 @@
 <meta property="og:url" content="http://SolaCode.github.io/2015/09/26/iOS渐入佳境之响应链Responder Chain/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="前言初学 Cocoa/Objective-C 时，如果有编程语言的基础，那么仅仅Objective-C这门语言很容易在几天就熟悉，然后就会花费大部分的时间学习 Cocoa 框架和适应它是如何工作的，尽管可能会开发出来像样的App，但毕竟如果只是处于能熟悉掌握API的使用这种level，如果想要估计做好iOS开发，或者说是真正的深刻的掌握OC这门语言，那我接下来的渐入佳境系列可能会帮助到你。">
-<meta property="og:image" content="http://SolaCode.github.io/1353853199_9448.png">
-<meta property="og:image" content="http://SolaCode.github.io/7.png">
-<meta property="og:image" content="http://SolaCode.github.io/0020L7Sqgy6HQcwOIh543&690.png">
-<meta property="og:updated_time" content="2015-09-26T13:08:03.000Z">
+<meta property="og:image" content="http://solacode.github.io/img/1353853199_9448.png">
+<meta property="og:image" content="http://solacode.github.io/img/7.png">
+<meta property="og:image" content="http://solacode.github.io/img/0020L7Sqgy6HQcwOIh543&690.png">
+<meta property="og:updated_time" content="2015-09-26T13:11:16.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS渐入佳境之响应链Responder Chain">
 <meta name="twitter:description" content="前言初学 Cocoa/Objective-C 时，如果有编程语言的基础，那么仅仅Objective-C这门语言很容易在几天就熟悉，然后就会花费大部分的时间学习 Cocoa 框架和适应它是如何工作的，尽管可能会开发出来像样的App，但毕竟如果只是处于能熟悉掌握API的使用这种level，如果想要估计做好iOS开发，或者说是真正的深刻的掌握OC这门语言，那我接下来的渐入佳境系列可能会帮助到你。">
@@ -265,7 +265,7 @@
 <figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIView</span> (<span class="title">ParentController</span>)</span></span><br><span class="line">-(<span class="built_in">UIViewController</span>*)parentController&#123;</span><br><span class="line">    <span class="built_in">UIResponder</span> *responder = [<span class="keyword">self</span> nextResponder];</span><br><span class="line">    <span class="keyword">while</span> (responder) &#123;</span><br><span class="line">	<span class="keyword">if</span> ([responder isKindOfClass:[<span class="built_in">UIViewController</span> class]]) &#123;</span><br><span class="line">		<span class="keyword">return</span> (<span class="built_in">UIViewController</span>*)responder;</span><br><span class="line">	&#125;</span><br><span class="line">	responder = [responder nextResponder];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
 <h3 id="四、responder_chain:"><strong>四、responder chain:</strong></h3><p>responder chain是一系列连接的responder对象，通过responder对象可以将处理事件的责任传递给下一个，更高级的对象,即当前responder对象的nextResponder。</p>
 <p>iOS中responder chain的结构为:</p>
-<p><img src="1353853199_9448.png" alt=""></p>
+<p><img src="http://solacode.github.io/img/1353853199_9448.png" alt=""></p>
 <p>从图中可以看出：</p>
 <ul>
 <li>UIView的nextResponder属性，如果有管理此view的UIViewController对象，则为此UIViewController对象；否则nextResponder即为其superview。</li>
@@ -274,7 +274,7 @@
 <li>UIApplication的nextResponder属性为nil。</li>
 </ul>
 <h4 id="事件处理过程："><strong>事件处理过程：</strong></h4><p><strong>第一步：当有事件发生时，先进行事件传递</strong>：</p>
-<p><img src="7.png" alt=""></p>
+<p><img src="http://solacode.github.io/img/7.png" alt=""></p>
 <p>如上图，iOS中事件传递首先从App(UIApplication)开始，接着传递到Window(UIWindow)，在接着往下传递到View（这个View就是<strong>hit-test view</strong>，至于如何找到，下面会仔细讲解这部分）之前，Window会将事件交给手势识别器GestureRecognizer。</p>
 <p>如果在此期间，GestureRecognizer识别了传递过来的事件，则该事件将不会继续传递到View去，而是像我们之前说的那样交给Target(ViewController)进行处理。</p>
 <p><strong>第二步：寻找响应者</strong></p>
@@ -283,7 +283,7 @@
 <h3 id="五、hit-test_view"><strong>五、hit-test view</strong></h3><p>hit-test view从表面意思可以看出就是接受点击测试的视图。在发生一个点击事件的时候，UIApplication对象会从队列的顶部获取到这个事件，在把这个事件分配给可以处理这个事件的视图。 事件会由一个指定的途径传递，一直到事件可以响应，如果响应链走了一遍，没有发现可以接收事件的视图，那么该事件就会被丢弃。如果有视图可以响应这个事件，这个视图就是hit-test view,发现hit-test view的这个过程称为hit-testing.</p>
 <p>接下来来说下当一个touch事件发生后，hit-testing是如果检测到哪个视图响应的。</p>
 <p>hit-testing在检测hit-test view的时候，会<strong>遍历view的所有子视图</strong>来判断是哪个视图包含当前的点击点。一旦检测到hit-test view,就会传递touch事件给视图去处理。</p>
-<p><img src="0020L7Sqgy6HQcwOIh543&amp;690.png" alt=""></p>
+<p><img src="http://solacode.github.io/img/0020L7Sqgy6HQcwOIh543&amp;690.png" alt=""></p>
 <p>在上面的图片中，如果touch点击的时候，是点击在view E里面。则检测过程是<br>1.首先是touch点在view A的bounds中，接下来检测view B和view C.<br>2.检测到touch点不在view B，在view C中，接下来检测view D和view E.<br>3.检测到touch点不在view D中，在view E中。<br>此时hit-testing过程已经完成，view E就是hit-test View.</p>
 <p>检测到hit-test View后，此view拥有优先处理事件的权利，如果view不能处理这个事件，事件就会沿着响应者链向下传递，直到找到一个能处理该事件的view.<br>那这个传递过程是怎么样的呢，我们就要知道The Responder Chain的组成了，在开头的时候已经说了（个人理解）</p>
 <p><strong>注意：</strong>hitTest:withEvent:方法将会忽略隐藏(hidden=YES)的视图，禁止用户操作(userInteractionEnabled=YES)的视图，以及alpha级别小于0.01(alpha&lt;0.01)的视图。如果一个子视图的区域超过父视图的<strong>bound</strong>区域(父视图的clipsToBounds 属性为NO，这样超过父视图bound区域的子视图内容也会显示)，那么正常情况下对子视图在父视图之外区域的触摸操作不会被识别,因为父视图的pointInside:withEvent:方法会返回NO,这样就不会继续向下遍历子视图了。当然，也可以重写pointInside:withEvent:方法来处理这种情况。</p>
