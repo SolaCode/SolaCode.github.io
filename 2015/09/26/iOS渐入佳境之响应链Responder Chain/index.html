@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS渐入佳境之响应链Responder Chain | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言初学 Cocoa/Objective-C 时，如果有编程语言的基础，那么仅仅Objective-C这门语言很容易在几天就熟悉，然后就会花费大部分的时间学习 Cocoa 框架和适应它是如何工作的，尽管可能会开发出来像样的App，但毕竟如果只是处于能熟悉掌握API的使用这种level，如果想要估计做好iOS开发，或者说是真正的深刻的掌握OC这门语言，那我接下来的渐入佳境系列可能会帮助到你。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS渐入佳境之响应链Responder Chain">
+<meta property="og:url" content="http://SolaCode.github.io/2015/09/26/iOS渐入佳境之响应链Responder Chain/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言初学 Cocoa/Objective-C 时，如果有编程语言的基础，那么仅仅Objective-C这门语言很容易在几天就熟悉，然后就会花费大部分的时间学习 Cocoa 框架和适应它是如何工作的，尽管可能会开发出来像样的App，但毕竟如果只是处于能熟悉掌握API的使用这种level，如果想要估计做好iOS开发，或者说是真正的深刻的掌握OC这门语言，那我接下来的渐入佳境系列可能会帮助到你。">
+<meta property="og:image" content="http://SolaCode.github.io/1353853199_9448.png">
+<meta property="og:image" content="http://SolaCode.github.io/7.png">
+<meta property="og:image" content="http://SolaCode.github.io/0020L7Sqgy6HQcwOIh543&690.png">
+<meta property="og:updated_time" content="2015-09-26T13:08:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS渐入佳境之响应链Responder Chain">
+<meta name="twitter:description" content="前言初学 Cocoa/Objective-C 时，如果有编程语言的基础，那么仅仅Objective-C这门语言很容易在几天就熟悉，然后就会花费大部分的时间学习 Cocoa 框架和适应它是如何工作的，尽管可能会开发出来像样的App，但毕竟如果只是处于能熟悉掌握API的使用这种level，如果想要估计做好iOS开发，或者说是真正的深刻的掌握OC这门语言，那我接下来的渐入佳境系列可能会帮助到你。">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://solacode.github.io/img/myIcon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">SolaCode</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/技术">技术</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/#" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/技术/" style="font-size: 20px;">技术</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">每天都是新的开始，如果有梦想，从现在就开始为之努力。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">SolaCode</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">SolaCode</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/技术">技术</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-iOS渐入佳境之响应链Responder Chain" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/09/26/iOS渐入佳境之响应链Responder Chain/" class="article-date">
+  	<time datetime="2015-09-26T10:33:49.000Z" itemprop="datePublished">2015-09-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS渐入佳境之响应链Responder Chain
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言">前言</h2><p>初学 Cocoa/Objective-C 时，如果有编程语言的基础，那么仅仅Objective-C这门语言很容易在几天就熟悉，然后就会花费大部分的时间学习 Cocoa 框架和适应它是如何工作的，尽管可能会开发出来像样的App，但毕竟如果只是处于能熟悉掌握API的使用这种level，如果想要估计做好iOS开发，或者说是真正的深刻的掌握OC这门语言，那我接下来的渐入佳境系列可能会帮助到你。</p>
+<a id="more"></a>
+<h2 id="正文"><strong>正文</strong></h2><p>这篇主要介绍响应链Responder Chain，在理解之前有必要先说明几个概念：responder对象，事件event，nextResponder。</p>
+<h3 id="一、responder对象："><strong>一、responder对象：</strong></h3><p>在iOS系统中，能够响应并处理事件的对象称之为responder object, UIResponder是所有responder对象的基类。</p>
+<p>UIApplication,UIViewController,UIView和所有继承自UIView的UIKit类(包括UIWindow,继承自UIView)都直接或间接的继承自UIResponder,所以它们的实例都是responder object对象。</p>
+<h3 id="二、事件event"><strong>二、事件event</strong></h3><p>在UIResponder类中定义了处理各种事件，包括触摸事件(Touch Event)、运动事件(Motion Event)和远程控制事件(Remote-Control Events)的编程接口。</p>
+<h4 id="触摸事件"><strong>触摸事件</strong></h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(<span class="tag">void</span>)<span class="rule"><span class="attribute">touchesBegan</span>:<span class="value">(NSSet  )touches withEvent:(UIEvent  )event</span></span>;</span><br><span class="line">(<span class="tag">void</span>)<span class="rule"><span class="attribute">touchesMoved</span>:<span class="value">(NSSet  )touches withEvent:(UIEvent  )event</span></span>;</span><br><span class="line">(<span class="tag">void</span>)<span class="rule"><span class="attribute">touchesEnded</span>:<span class="value">(NSSet  )touches withEvent:(UIEvent  )event</span></span>;</span><br><span class="line">(<span class="tag">void</span>)<span class="rule"><span class="attribute">touchesCancelled</span>:<span class="value">(NSSet  )touches withEvent:(UIEvent  )event</span></span>;</span><br></pre></td></tr></table></figure>
+<p>这四个方法分别处理触摸开始事件，触摸移动事件，触摸终止事件，以及触摸跟踪取消事件。</p>
+<h4 id="加速计事件"><strong>加速计事件</strong></h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(<span class="tag">void</span>)<span class="rule"><span class="attribute">motionBegan</span>:<span class="value">(UIEventSubtype)motion withEvent:(UIEvent *)event</span></span>;</span><br><span class="line">(<span class="tag">void</span>)<span class="rule"><span class="attribute">motionEnded</span>:<span class="value">(UIEventSubtype)motion withEvent:(UIEvent *)event</span></span>;</span><br><span class="line">(<span class="tag">void</span>)<span class="rule"><span class="attribute">motionCancelled</span>:<span class="value">(UIEventSubtype)motion withEvent:(UIEvent *)event</span></span>;</span><br></pre></td></tr></table></figure>
+<p>当用户以特定方式移动设备，比如摇摆设备时，iPhone或者iPod touch会产生运动事件。运动事件源自设备加速计。系统会对加速计的数据进行计算，如果符合某种模式，就将它解释为手势，然后创建一个代表该手势的UIEvent对象，并发送给当前活动的应用程序进行处理。</p>
+<p>请注意：在iPhone 3.0上，只有摇摆设备的动作会被解释为手势，并形成运动事件。<br>运动事件比触摸事件简单得多。系统只是告诉应用程序动作何时开始及何时结束，而不包括在这个过程中发生的每个动作的时间。而且，触摸事件中包含一个触摸对象的集合及其相关的状态，而运动事件中除了事件类型、子类型、和时间戳之外，没有其它状态。系统以这种方式来解析运动手势，避免和方向变化事件造成冲突。</p>
+<p>为了处理运动事件，UIResponder的子类必须实现motionBegan:withEvent:或motionEnded:withEvent:方法之一，或者同时实现这两个方法。举例来说，如果用户希望赋以水平摆动和垂直摆动不同的意义，就可以在motionBegan:withEvent:方法中将当前加速计轴的值缓存起来，并将它们和motionEnded:withEvent:消息传入的值相比较，然后根据不同的结果进行动作。响应者还应该实现<br>motionCancelled:withEvent:方法，以便响应系统发出的运动取消的事件。有些时候，这些事件会告诉您整个动作根本不是一个正当的手势。</p>
+<p>应用程序及其键盘焦点窗口会将运动事件传递给窗口的第一响应者。如果第一响应者不能处理，事件就沿着响应者链进行传递，直到最终被处理或忽略，这和触摸事件的处理相类似（详细信息请参见“事件的传递”部分）。但是，摆动事件和触摸事件有一个很大的不同，当用户开始摆动设备时，系统就会通过motionBegan:withEvent:消息的方式向第一响应者发送一个运动事件，如果第一响应者不能处理，该事件就在响应者链中传递；如果摆动持续的时间小于1秒左右，系统就会向第一响应者发送motionEnded:withEvent:消息；但是，如果摆动时间持续更长，如果系统确定当前的动作不是摆动，则第一响应者会收到一个motionCancelled:withEvent:消息。<br>如果摆动事件沿着响应者链传递到窗口而没有被处理，且UIApplication的applicationSupportsShakeToEdit属性被设置为YES，则iPhone OS会显示一个带有撤消（Undo）和重做（Redo）的命令。缺省情况下，这个属性的值为NO。</p>
+<h4 id="远程控制事件"><strong>远程控制事件</strong></h4><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="tag">void</span>)<span class="rule"><span class="attribute">remoteControlReceivedWithEvent</span>:<span class="value">(UIEvent *)event</span></span>;</span><br></pre></td></tr></table></figure>
+<p>它能够被外部配件引发。</p>
+<p><strong>UITouch &amp; UIEvent</strong></p>
+<p>在屏幕上的每一次动作事件都是一次Touch，在iOS中用UITouch对象表示每一次的触控，多个Touch组成一次Event，用UIEvent来表示一次事件对象。</p>
+<h3 id="三、nextResponder："><strong>三、nextResponder：</strong></h3><p>UIResponder中的默认实现是什么都不做，但UIKit中UIResponder的直接子类(UIView,UIViewController…)的默认实现是将事件沿着responder chain继续向上传递到下一个responder,即nextResponder。所以在定制UIView子类的上述事件处理方法时，如果需要将事件传递给next responder,可以直接调用super的对应事件处理方法，super的对应方法将事件传递给next responder,即使用</p>
+<p><code>[super touchesBegan:touches withEvent:event];</code></p>
+<p>不建议直接向nextResponder发送消息，这样可能会漏掉父类对这一事件的其他处理。</p>
+<p><code>[self.nextResponder  touchesBegan:touches withEvent:event];</code></p>
+<p>另外,在定制UIView子类的事件处理方法时，如果其中一个方法没有调用super的对应方法，则其他方法也需要重写,不使用super的方法，否则事件处理流程会很混乱。</p>
+<h4 id="巧妙利用nextResponder"><strong>巧妙利用nextResponder</strong></h4><p>通过UIViewController的view属性可以访问到其管理的view对象,及此view的所有subviews。但是根据一个view对象,没有直接的方法可以得到管理它的viewController,但我们使用responder chain可以间接的得到，代码如下:</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">UIView</span> (<span class="title">ParentController</span>)</span></span><br><span class="line">-(<span class="built_in">UIViewController</span>*)parentController&#123;</span><br><span class="line">    <span class="built_in">UIResponder</span> *responder = [<span class="keyword">self</span> nextResponder];</span><br><span class="line">    <span class="keyword">while</span> (responder) &#123;</span><br><span class="line">	<span class="keyword">if</span> ([responder isKindOfClass:[<span class="built_in">UIViewController</span> class]]) &#123;</span><br><span class="line">		<span class="keyword">return</span> (<span class="built_in">UIViewController</span>*)responder;</span><br><span class="line">	&#125;</span><br><span class="line">	responder = [responder nextResponder];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">nil</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h3 id="四、responder_chain:"><strong>四、responder chain:</strong></h3><p>responder chain是一系列连接的responder对象，通过responder对象可以将处理事件的责任传递给下一个，更高级的对象,即当前responder对象的nextResponder。</p>
+<p>iOS中responder chain的结构为:</p>
+<p><img src="1353853199_9448.png" alt=""></p>
+<p>从图中可以看出：</p>
+<ul>
+<li>UIView的nextResponder属性，如果有管理此view的UIViewController对象，则为此UIViewController对象；否则nextResponder即为其superview。</li>
+<li>UIViewController的nextResponder属性为其管理view的superview.</li>
+<li>UIWindow的nextResponder属性为UIApplication对象。</li>
+<li>UIApplication的nextResponder属性为nil。</li>
+</ul>
+<h4 id="事件处理过程："><strong>事件处理过程：</strong></h4><p><strong>第一步：当有事件发生时，先进行事件传递</strong>：</p>
+<p><img src="7.png" alt=""></p>
+<p>如上图，iOS中事件传递首先从App(UIApplication)开始，接着传递到Window(UIWindow)，在接着往下传递到View（这个View就是<strong>hit-test view</strong>，至于如何找到，下面会仔细讲解这部分）之前，Window会将事件交给手势识别器GestureRecognizer。</p>
+<p>如果在此期间，GestureRecognizer识别了传递过来的事件，则该事件将不会继续传递到View去，而是像我们之前说的那样交给Target(ViewController)进行处理。</p>
+<p><strong>第二步：寻找响应者</strong></p>
+<p>第一响应者是第一个接收事件的View对象，我们在Xcode的Interface Builder画视图时，可以看到视图结构中就有First Responder。</p>
+<p>当iOS识别出一个事件，它将传递这个事件给看起来与处理事件最相关的初始对象，例如触摸发生的view。如果初始对象不能够处理这个事件，iOS会继续传递这个事件给更大范围的对象，直到找到一个拥有足够的条件环境(context)来处理这个事件的对象。这一系列的对象被称为一个响应链(responder chain)，并且，当iOS在链上传递事件时，它同时转移响应这个事件的职责。这个设计模式让事件处理具备协作性和动态特性。</p>
+<h3 id="五、hit-test_view"><strong>五、hit-test view</strong></h3><p>hit-test view从表面意思可以看出就是接受点击测试的视图。在发生一个点击事件的时候，UIApplication对象会从队列的顶部获取到这个事件，在把这个事件分配给可以处理这个事件的视图。 事件会由一个指定的途径传递，一直到事件可以响应，如果响应链走了一遍，没有发现可以接收事件的视图，那么该事件就会被丢弃。如果有视图可以响应这个事件，这个视图就是hit-test view,发现hit-test view的这个过程称为hit-testing.</p>
+<p>接下来来说下当一个touch事件发生后，hit-testing是如果检测到哪个视图响应的。</p>
+<p>hit-testing在检测hit-test view的时候，会<strong>遍历view的所有子视图</strong>来判断是哪个视图包含当前的点击点。一旦检测到hit-test view,就会传递touch事件给视图去处理。</p>
+<p><img src="0020L7Sqgy6HQcwOIh543&amp;690.png" alt=""></p>
+<p>在上面的图片中，如果touch点击的时候，是点击在view E里面。则检测过程是<br>1.首先是touch点在view A的bounds中，接下来检测view B和view C.<br>2.检测到touch点不在view B，在view C中，接下来检测view D和view E.<br>3.检测到touch点不在view D中，在view E中。<br>此时hit-testing过程已经完成，view E就是hit-test View.</p>
+<p>检测到hit-test View后，此view拥有优先处理事件的权利，如果view不能处理这个事件，事件就会沿着响应者链向下传递，直到找到一个能处理该事件的view.<br>那这个传递过程是怎么样的呢，我们就要知道The Responder Chain的组成了，在开头的时候已经说了（个人理解）</p>
+<p><strong>注意：</strong>hitTest:withEvent:方法将会忽略隐藏(hidden=YES)的视图，禁止用户操作(userInteractionEnabled=YES)的视图，以及alpha级别小于0.01(alpha&lt;0.01)的视图。如果一个子视图的区域超过父视图的<strong>bound</strong>区域(父视图的clipsToBounds 属性为NO，这样超过父视图bound区域的子视图内容也会显示)，那么正常情况下对子视图在父视图之外区域的触摸操作不会被识别,因为父视图的pointInside:withEvent:方法会返回NO,这样就不会继续向下遍历子视图了。当然，也可以重写pointInside:withEvent:方法来处理这种情况。</p>
+<h3 id="六、UIView的bounds到底是干嘛的?"><strong>六、UIView的bounds到底是干嘛的?</strong></h3><p><em><a href="http://www.jianshu.com/p/c489b7c0827d" target="_blank" rel="external">UIView的bounds到底是干嘛的?</a></em><br>这篇博文讲的很详细！</p>
+<p>frame : 当前 view 在其 superView 中的位置及大小</p>
+<p>bounds : 是 view 自身的坐标系（为其 subViews 提供的坐标系）</p>
+<p>center : 该view的中心点在父view坐标系统中的位置</p>
+<blockquote>
+<p>参考：<a href="http://www.jianshu.com/p/a71d3325fcf5" target="_blank" rel="external">官方文档：iOS事件处理指南(译)</a></p><p></p>
+<p>　　　<a href="http://blog.csdn.net/yongyinmg/article/details/19616527" target="_blank" rel="external">Responder Chain(ios事件传递)</a></p>
+<p>　　　<a href="http://blog.sina.com.cn/s/blog_6de189920101jrk0.html" target="_blank" rel="external">The Responder Chain（响应链）</a></p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/09/21/我的开发路程/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">我的开发路程</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="iOS渐入佳境之响应链Responder Chain" data-title="iOS渐入佳境之响应链Responder Chain" data-url="http://SolaCode.github.io/2015/09/26/iOS渐入佳境之响应链Responder Chain/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 SolaCode
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
