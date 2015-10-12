@@ -5,16 +5,16 @@
   
   <title>iOS渐入佳境之RunTime | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="RunTime:系统在运行的时候的一些机制简介RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。">
+  <meta name="description" content="简介RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS渐入佳境之RunTime">
 <meta property="og:url" content="http://SolaCode.github.io/2015/10/01/iOS渐入佳境之RunTime（一）/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="RunTime:系统在运行的时候的一些机制简介RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。">
-<meta property="og:updated_time" content="2015-10-12T01:58:34.000Z">
+<meta property="og:description" content="简介RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。">
+<meta property="og:updated_time" content="2015-10-12T02:00:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS渐入佳境之RunTime">
-<meta name="twitter:description" content="RunTime:系统在运行的时候的一些机制简介RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。">
+<meta name="twitter:description" content="简介RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -236,7 +236,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="RunTime:系统在运行的时候的一些机制">RunTime:系统在运行的时候的一些机制</h2><h2 id="简介"><strong>简介</strong></h2><p>RunTime简称运行时。就是<strong>系统在运行的时候的一些机制</strong>，其中最主要的是消息机制。</p>
+        <h2 id="简介"><strong>简介</strong></h2><p>RunTime简称运行时。就是<strong>系统在运行的时候的一些机制</strong>，其中最主要的是消息机制。</p>
 <a id="more"></a>
 <p>对于C语言，函数的调用在编译的时候会决定调用哪个函数（ C语言的函数调用请看这里 ）。编译完成之后直接顺序执行，无任何二义性。OC的函数调用成为消息发送。属于动态调用过程。在编译的时候并不能决定真正调用哪个函数（事实证明，在编 译阶段，OC可以调用任何函数，即使这个函数并未实现，只要申明过就不会报错。而C语言在编译阶段就会报错）。只有在真正运行的时候才会根据函数的名称找 到对应的函数来调用。</p>
 <h3 id="基本概念"><strong>基本概念</strong></h3><ol>
