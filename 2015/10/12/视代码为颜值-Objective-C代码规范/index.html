@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>视代码为颜值：Objective-C代码规范 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言细心的人会发现，在很多程序员招聘要求上会有代码规范这一要求，刚开始可能认为这个要求很容易达到，但其实细想，这并不是一个简单地要求。
+一开始，我仅仅只以能实现功能为主要目的，其他细节一概不管，但是注意到招聘要求的细节后仔细想过，在公司，自己的代码要给很多人看，所以做到代码清晰简洁、方便阅读理解很重要。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="视代码为颜值：Objective-C代码规范">
+<meta property="og:url" content="http://SolaCode.github.io/2015/10/12/视代码为颜值-Objective-C代码规范/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言细心的人会发现，在很多程序员招聘要求上会有代码规范这一要求，刚开始可能认为这个要求很容易达到，但其实细想，这并不是一个简单地要求。
+一开始，我仅仅只以能实现功能为主要目的，其他细节一概不管，但是注意到招聘要求的细节后仔细想过，在公司，自己的代码要给很多人看，所以做到代码清晰简洁、方便阅读理解很重要。">
+<meta property="og:updated_time" content="2015-10-12T12:03:11.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="视代码为颜值：Objective-C代码规范">
+<meta name="twitter:description" content="前言细心的人会发现，在很多程序员招聘要求上会有代码规范这一要求，刚开始可能认为这个要求很容易达到，但其实细想，这并不是一个简单地要求。
+一开始，我仅仅只以能实现功能为主要目的，其他细节一概不管，但是注意到招聘要求的细节后仔细想过，在公司，自己的代码要给很多人看，所以做到代码清晰简洁、方便阅读理解很重要。">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://solacode.github.io/img/myIcon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">SolaCode</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/技术">技术</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/#" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/技术/" style="font-size: 20px;">技术</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">每天都是新的开始，如果有梦想，从现在就开始为之努力。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">SolaCode</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">SolaCode</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/技术">技术</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-视代码为颜值-Objective-C代码规范" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/12/视代码为颜值-Objective-C代码规范/" class="article-date">
+  	<time datetime="2015-10-12T11:58:55.000Z" itemprop="datePublished">2015-10-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      视代码为颜值：Objective-C代码规范
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><strong>前言</strong></h2><p>细心的人会发现，在很多程序员招聘要求上会有代码规范这一要求，刚开始可能认为这个要求很容易达到，但其实细想，这并不是一个简单地要求。</p>
+<p>一开始，我仅仅只以能实现功能为主要目的，其他细节一概不管，但是注意到招聘要求的细节后仔细想过，在公司，自己的代码要给很多人看，所以做到代码清晰简洁、方便阅读理解很重要。</p>
+<a id="more"></a>
+<p><strong>bjective-C代码规范整理几点，如下：</strong></p>
+<h2 id="一、编码规范"><strong>一、编码规范</strong></h2><h3 id="1、命名规范"><strong>1、命名规范</strong></h3><h4 id="类命名"><strong>类命名</strong></h4><ol>
+<li><p>首字母大写，之后每个单词首字母都大写</p>
+</li>
+<li><p>使用能够反映类功能的名词短语</p>
+</li>
+<li><p>文件和类同名</p>
+</li>
+<li><p>举例：BaseClient、ImageStore</p>
+</li>
+</ol>
+<h4 id="特殊类命名"><strong>特殊类命名</strong></h4><ol>
+<li><p>如果是视图控制器的子类应添加后缀“ViewController”或者“Controller”</p>
+</li>
+<li><p>如果是视图的子类应添加后缀“View”</p>
+</li>
+<li><p>如果是按钮的子类应添加后缀“Button”</p>
+<p>等等。。。</p>
+</li>
+<li><p>举例：SettingsViewController、NavigationView</p>
+</li>
+</ol>
+<h4 id="分类（类别）命名"><strong>分类（类别）命名</strong></h4><ol>
+<li><p>与类命名相同，此外需添加要扩展的类名和“+”</p>
+</li>
+<li><p>举例：NSString+URLEncoding</p>
+</li>
+</ol>
+<h4 id="协议（委托）命名"><strong>协议（委托）命名</strong></h4><ol>
+<li><p>与类命名相同，此外需添加“Delegate”后缀</p>
+</li>
+<li><p>举例：ReplyViewDelegate</p>
+</li>
+</ol>
+<h4 id="枚举类型命名"><strong>枚举类型命名</strong></h4><ol>
+<li><p>首字母大写，之后每个单词首字母都大写，<strong>最后加“s”</strong></p>
+</li>
+<li><p>枚举变量使用枚举类型去掉“s”作为前缀，每个单词首字母大写，中间不允许加下划线</p>
+</li>
+<li><p>举例：</p>
+</li>
+</ol>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="keyword">enum</span> <span class="built_in">UIControlEvents</span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="built_in">UIControlEventTouchDown</span>,</span><br><span class="line"></span><br><span class="line"><span class="built_in">UIControlEventTouchUpInside</span></span><br><span class="line"></span><br><span class="line">&#125;<span class="built_in">UIControlEvents</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="方法命名"><strong>方法命名</strong></h4><ol>
+<li><p>首字母小写，之后每个单词首字母都大写</p>
+</li>
+<li><p>方法名使用动词短语</p>
+</li>
+<li><p>举例：- (void)setPostValue:(int)value</p>
+</li>
+</ol>
+<h4 id="方法参数命名"><strong>方法参数命名</strong></h4><ol>
+<li><p>首字母小写，之后每个单词首字母都大写</p>
+</li>
+<li><p>具有足够的说明性</p>
+</li>
+<li><p>不需要添加类型前缀</p>
+</li>
+<li><p>举例：- (void)sendUserInfo:(NSDictionary *)userInfo</p>
+</li>
+</ol>
+<h4 id="变量命名"><strong>变量命名</strong></h4><ol>
+<li><p>首字母小写，之后每个单词首字母都大写</p>
+</li>
+<li><p>具有足够的说明性</p>
+</li>
+<li><p>成员变量添加“_”前缀</p>
+</li>
+</ol>
+<h4 id="常量命名"><strong>常量命名</strong></h4><ol>
+<li><p>常量（预定义，局部常量等）使用<strong>小写k开头</strong>的驼峰法</p>
+</li>
+<li><p>举例：kInvalidHandle , kWritePerm</p>
+</li>
+</ol>
+<h4 id="对于系统的常用类作实例变量声明时加入后缀："><strong>对于系统的常用类作实例变量声明时加入后缀：</strong></h4><ol>
+<li><p>UIViewController:VC</p>
+</li>
+<li><p>UIImage:Img　　UIImageView:ImgView　　UIView:View<br>　　<br>UILabel:Lbl    UIButton:Btn</p>
+</li>
+<li><p>UINavigationBar:NBar　　 UIToolBar:TBar　　</p>
+</li>
+</ol>
+<p>UISearchBar:SBar</p>
+<ol>
+<li><p>UITextField:TextField　　UITextView:TextView</p>
+</li>
+<li><p>NSArray:Array　　     NSMutableArray:MArray</p>
+</li>
+<li><p>NSDictionary:Dict　　NSMutableDictionary:MDict</p>
+</li>
+<li><p>NSString:Str　　       NSMutableString:MStr</p>
+</li>
+<li><p>NSSet:Set　　　　　  NSMutableSet:MSet</p>
+</li>
+</ol>
+<h3 id="2、空行"><strong>2、空行</strong></h3><h4 id="-h中的空行"><strong>.h中的空行</strong></h4><ol>
+<li><p>文件说明与头文件包涵（#import）之间空1行</p>
+</li>
+<li><p>头文件包涵（#import）之间，如果需要分类区别，各类别之间空1行</p>
+</li>
+<li><p>头文件包涵（#import）与@class之间空2行</p>
+</li>
+<li><p>@interface与@class之间空一行</p>
+</li>
+<li><p>头文件｛｝里面，空1行开始声明对象成员，如果需要分类区别，各类别之间空1行</p>
+</li>
+<li><p>｛｝外空1行，书写属性，如果需要分类区别，各类别之间空1行</p>
+</li>
+<li><p>空1行开始写方法，如果需要分类区别，各类别之间空1行</p>
+</li>
+<li><p>方法完成后，空1行@end</p>
+</li>
+<li><p>如果需要声明protocal，空2行接着写。通常protocal写在@end后面，但是声明在@interface前面，也可以另写一个文件</p>
+</li>
+</ol>
+<h4 id="-m中的空行"><strong>.m中的空行</strong></h4><ol>
+<li><p>文件说明与头文件包涵（#import）之间空1行</p>
+</li>
+<li><p>头文件包涵（#import）之间，如果需要分类区别，各类别之间空1行</p>
+</li>
+<li><p>@implementation和@synthesize之间空一行，@synthesize不要使用逗号（，）如果需要分类区别，各类别之间空1行</p>
+</li>
+<li><p>@synthesize与方法之间空2行</p>
+</li>
+<li><p>各方法之间空2行</p>
+</li>
+</ol>
+<h4 id="方法里面的空行"><strong>方法里面的空行</strong></h4><ol>
+<li><p>方法名后空1行开始写</p>
+</li>
+<li><p>变量声明后需要空1行，如果需要分类区别，各类别之间空1行</p>
+</li>
+<li><p>条件，循环，选择语句，整个语句结束，需要空1行</p>
+</li>
+<li><p>各功能块之间空1行</p>
+</li>
+<li><p>最后一个反括号之前不空行</p>
+</li>
+<li><p>注释与代码之间不空行</p>
+</li>
+<li><p><code>#pragma mark</code>与方法之间空1行</p>
+</li>
+</ol>
+<h3 id="3、空格"><strong>3、空格</strong></h3><ol>
+<li><p>.h中协议&lt;&gt;前面有1个空格</p>
+</li>
+<li><p>.h中成员声明时，类型与变量之间有至少1各空格。星号（＊）靠近变量，不靠近类型。（部分习惯，所有变量可以以＊对齐，中间留空）</p>
+</li>
+<li><p>@property后有1各空格，（）里面，逗号后有1个空格，括号外，先留1个空格，再声明属性</p>
+</li>
+<li><p>方法＋，－后，与（）之间有1个空格</p>
+</li>
+<li><p>返回类型与＊之间有1个空格，方法参数中返回类型与＊之间有1个空格</p>
+</li>
+<li><p>多参数的方法，每一个参数后面都有1个空格</p>
+</li>
+</ol>
+<h3 id="4、注释"><strong>4、注释</strong></h3><ol>
+<li><p>文件都包含文件头，要说明文件名、作者、创建时间、变更记录</p>
+</li>
+<li><p>多人协作完成项目时，public接口的每个方法都应该添加关于函数，参数，返回值以及副作用的注释</p>
+</li>
+</ol>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/<span class="keyword">*</span><span class="keyword">*</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">*</span> 方法或变量说明</span><br><span class="line"></span><br><span class="line"> <span class="keyword">*</span> <span class="comment">@param 参数1说明(针对方法)</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">*</span> <span class="comment">@param 参数2说明(针对方法)</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">*</span> <span class="comment">@return 若方法有返回值则对返回值作说明</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">*</span>/</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>当if语句的判断条件复杂时，需要用注释说明判断内容</p>
+</li>
+<li><p>接口类（继承于BaseClient）的头文件每个方法前都应该注明方法的作用</p>
+</li>
+</ol>
+<h3 id="5、方法"><strong>5、方法</strong></h3><p>*. 留一个空格在-或+和返回类型之间，但参数列表里的参数之间不要留间隔，每个冒号之前都必须有对该参数的说明词，如：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="typename">void</span>)<span class="string">doSomethingWithString:</span>(NSString *)string <span class="string">number:</span>(<span class="typename">int</span>)num</span><br></pre></td></tr></table></figure>
+<p>*. 如果参数过多，推荐每个参数各占一行。使用多行的情况下，在参数前加冒号用于对齐，如：</p>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="pp">- <span class="params">(void)</span>doSomethingWith:<span class="params">(<span class="variable">GTMFoo</span> *)</span>theFoo</span><br><span class="line">                   rect:<span class="params">(<span class="variable">NSRect</span>)</span>theRect</span><br><span class="line">               interval:<span class="params">(float)</span>theInterval</span></span><br></pre></td></tr></table></figure>
+<h3 id="6、其他"><strong>6、其他</strong></h3><ol>
+<li><p>NSLog和不要的代码在测试完成后一律删除，及时删除或注释掉无用的代码</p>
+</li>
+<li><p>为了不影响阅读，一个类的代码行数尽量不要超过300行;一个方法尽量不要超过30行。有超过的在重构的时候想办法分解。</p>
+</li>
+<li><p>操作符前后都要加空格</p>
+</li>
+<li><p>UITableViewCell里面的network client都要委托出来</p>
+</li>
+<li><p>控件布局使用相对坐标</p>
+</li>
+</ol>
+<h2 id="二、文档结构管理"><strong>二、文档结构管理</strong></h2><ol>
+<li><p>建立<strong>Libraries</strong>文件夹，所有第三方库放入其中。</p>
+</li>
+<li><p>建立<strong>Utilities</strong>文件夹，自已封装的类放入其中。</p>
+</li>
+<li><p>建立<strong>Constants.h</strong>头文件，所有的常量定义于其中。Constants.h文件放入Main文件组里面。</p>
+</li>
+<li><p>视图控制器及AppDelegate统一放在<strong>“Controllers”</strong>分组下</p>
+</li>
+<li><p>每个功能块放入一个Group，在目录里建立实际文件夹管理。</p>
+</li>
+<li><p>程序资源文件放入<strong>Supporting Files</strong>文件夹中。如.plist、数据库资料等。</p>
+</li>
+<li><p>在Supporting Files文件夹下建立Image、Music和Video等相关文件夹。图片、音频、视频等资源分别放入其中。图片资源以程序逻辑框架建立相应实体文件夹管理，若多个功能块共用的，建立<strong>Common</strong>文件夹，放入其中。</p>
+</li>
+</ol>
+<h2 id="后话"><strong>后话</strong></h2><p>其实，学会这些规则很简单，关键是一直坚持遵守，然后成为一种习惯，如果能有这种认知，<strong>视代码为颜值</strong>，那不用督促，代码都会写的无比漂亮，祝越来越美！</p>
+<h2 id="参考"><strong>参考</strong></h2><blockquote>
+<p><em><a href="http://blog.csdn.net/zhaoxy_thu/article/details/9090963" target="_blank" rel="external">iOS代码规范</a></em></p>
+<p><em><a href="http://www.cnblogs.com/pengyingh/articles/2405693.html" target="_blank" rel="external">iPhone开发：Objective C 代码规范－iOS总结版</a></em></p>
+<p><em><a href="http://www.cnblogs.com/celestial/archive/2012/06/30/2571417.html" target="_blank" rel="external">iOS编程规范</a></em></p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS渐入佳境之RunTime（二）：习题练习</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="视代码为颜值-Objective-C代码规范" data-title="视代码为颜值：Objective-C代码规范" data-url="http://SolaCode.github.io/2015/10/12/视代码为颜值-Objective-C代码规范/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 SolaCode
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
