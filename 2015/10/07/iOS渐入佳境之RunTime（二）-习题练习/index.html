@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>iOS渐入佳境之RunTime（一）：整体把握 | Hexo</title>
+  <title>iOS渐入佳境之RunTime（二）：习题练习 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="简介RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。">
+  <meta name="description" content="前言通过上一篇的学习，只是大致了解什么是RunTime，但具体里面的细节还不是很了解，现在就做几道题来深究一下，正所谓实践出真理。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS渐入佳境之RunTime（一）：整体把握">
-<meta property="og:url" content="http://SolaCode.github.io/2015/10/01/iOS渐入佳境之RunTime（一）/index.html">
+<meta property="og:title" content="iOS渐入佳境之RunTime（二）：习题练习">
+<meta property="og:url" content="http://SolaCode.github.io/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="简介RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。">
-<meta property="og:updated_time" content="2015-10-12T02:13:53.000Z">
+<meta property="og:description" content="前言通过上一篇的学习，只是大致了解什么是RunTime，但具体里面的细节还不是很了解，现在就做几道题来深究一下，正所谓实践出真理。">
+<meta property="og:image" content="http://solacode.github.ioimg/1419385138428444.jpg">
+<meta property="og:updated_time" content="2015-10-12T02:30:21.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS渐入佳境之RunTime（一）：整体把握">
-<meta name="twitter:description" content="简介RunTime简称运行时。就是系统在运行的时候的一些机制，其中最主要的是消息机制。">
+<meta name="twitter:title" content="iOS渐入佳境之RunTime（二）：习题练习">
+<meta name="twitter:description" content="前言通过上一篇的学习，只是大致了解什么是RunTime，但具体里面的细节还不是很了解，现在就做几道题来深究一下，正所谓实践出真理。">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -199,11 +200,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-iOS渐入佳境之RunTime（一）" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-iOS渐入佳境之RunTime（二）-习题练习" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/10/01/iOS渐入佳境之RunTime（一）/" class="article-date">
-  	<time datetime="2015-10-01T10:33:49.000Z" itemprop="datePublished">2015-10-01</time>
+      <a href="/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/" class="article-date">
+  	<time datetime="2015-10-07T14:15:02.000Z" itemprop="datePublished">2015-10-07</time>
 </a>
     </div>
   
@@ -216,7 +217,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iOS渐入佳境之RunTime（一）：整体把握
+      iOS渐入佳境之RunTime（二）：习题练习
     </h1>
   
 
@@ -236,26 +237,30 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="简介"><strong>简介</strong></h2><p>RunTime简称运行时。就是<strong>系统在运行的时候的一些机制</strong>，其中最主要的是消息机制。</p>
+        <h2 id="前言"><strong>前言</strong></h2><p>通过上一篇的学习，只是大致了解什么是RunTime，但具体里面的细节还不是很了解，现在就做几道题来深究一下，正所谓实践出真理。</p>
 <a id="more"></a>
-<p>对于C语言，函数的调用在编译的时候会决定调用哪个函数（ C语言的函数调用请看这里 ）。编译完成之后直接顺序执行，无任何二义性。OC的函数调用成为消息发送。属于动态调用过程。在编译的时候并不能决定真正调用哪个函数（事实证明，在编 译阶段，OC可以调用任何函数，即使这个函数并未实现，只要申明过就不会报错。而C语言在编译阶段就会报错）。只有在真正运行的时候才会根据函数的名称找 到对应的函数来调用。</p>
-<h3 id="基本概念"><strong>基本概念</strong></h3><ol>
-<li><p>SEL和IMP都是数据类型</p>
+<h3 id="最重要知识点："><strong>最重要知识点：</strong></h3><ol>
+<li><p>如何消息分发实现动态调用，这里的调用一般是指函数。</p>
 </li>
-<li><p>SEL SEL本身是一个整型，编译器会另外生成一张SEL和方法名称对应的表</p>
-<p>SEL a = @selector(testMetaClass)</p>
-<p>testMetaClass是方法名。</p>
+<li><p>和C语言函数调用的区别。</p>
 </li>
-<li><p>IMP 是一个函数指针</p>
+<li><p>class&amp;nsobject&amp;meta class的联系与区别。</p>
+</li>
+<li><p>super和self的联系</p>
+</li>
+<li><p>成员变量与属性</p>
+</li>
+<li><p>消息分发实现动态调用时出现的<strong>动态方法解析和消息转发</strong></p>
 </li>
 </ol>
-<p>对于名称相同的方法，他们都有相同的SEL,方法的名称不包括类名称，所以子类和父类中的同名方法拥有相同的SEL,但是他们的实现可以各不相同， 因而在他们各自的Dispatch表中SEL所对应的IMP是不同的</p>
-<h3 id="建议："><strong>建议：</strong></h3><p><strong>了解了这些基本概念后，需要对runtime有个总体的把握，刚开始不需要太注意细节，主要了解发展史和任务。</strong></p>
-<p>总体把控方面，这篇文章写的很好，理解了什么是消息机制就行了，建议读两遍理解！</p>
+<h2 id="习题内容"><strong>习题内容</strong></h2><p>以下是习题内容(图片转自@唐巧_boy微博):</p>
+<p><img src="http://solacode.github.ioimg/1419385138428444.jpg" alt=""></p>
+<p>看到题后先看看自己能不能有思路，然后再敲代码实现，我做的时候有一些出错，但是查资料后，才理解清楚，网上有篇文章写的很好很透彻，领教了！</p>
 <blockquote>
-<p><em><a href="http://springox.w18.net/2015/09/03/objectivecruntime/" target="_blank" rel="external">Objective-C与Runtime</a></em></p>
+<p><em><a href="http://www.cocoachina.com/ios/20141224/10740.html" target="_blank" rel="external">刨根问底Objective－C Runtime</a></em></p>
 </blockquote>
-<h3 id="runtime先说到这里，终于盼到国庆，休息几天，下次继续深究。。">runtime先说到这里，终于盼到国庆，休息几天，下次继续深究。。</h3>
+<p>希望大家有所收获。</p>
+
       
     </div>
     
@@ -264,18 +269,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          iOS渐入佳境之RunTime（二）：习题练习
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/09/26/iOS渐入佳境之响应链Responder Chain/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">iOS渐入佳境之响应链Responder Chain</div>
+    <a href="/2015/10/01/iOS渐入佳境之RunTime（一）/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS渐入佳境之RunTime（一）：整体把握</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -304,7 +300,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="iOS渐入佳境之RunTime（一）" data-title="iOS渐入佳境之RunTime（一）：整体把握" data-url="http://SolaCode.github.io/2015/10/01/iOS渐入佳境之RunTime（一）/"></div>
+	<div class="ds-thread" data-thread-key="iOS渐入佳境之RunTime（二）-习题练习" data-title="iOS渐入佳境之RunTime（二）：习题练习" data-url="http://SolaCode.github.io/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
