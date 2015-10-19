@@ -3,19 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>iOS渐入佳境之RunTime（二）：习题练习 | Hexo</title>
+  <title>iOS渐入佳境之RunTime（三）：刨根问底 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="前言通过上一篇的学习，只是大致了解什么是RunTime，但具体里面的细节还不是很了解，现在就做几道题来深究一下，正所谓实践出真理。">
+  <meta name="description" content="前言通过前两篇的基础概念学习和习题练习，已经知道：runTime是Objective-C作为动态语言的保障。仅仅知道这些还不够，今天就来刨根问底！">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS渐入佳境之RunTime（二）：习题练习">
-<meta property="og:url" content="http://SolaCode.github.io/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/index.html">
+<meta property="og:title" content="iOS渐入佳境之RunTime（三）：刨根问底">
+<meta property="og:url" content="http://SolaCode.github.io/2015/10/10/iOS渐入佳境之RunTime（三）：刨根问底/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="前言通过上一篇的学习，只是大致了解什么是RunTime，但具体里面的细节还不是很了解，现在就做几道题来深究一下，正所谓实践出真理。">
-<meta property="og:image" content="http://solacode.github.io/img/1419385138428444.jpg">
-<meta property="og:updated_time" content="2015-10-12T02:33:42.000Z">
+<meta property="og:description" content="前言通过前两篇的基础概念学习和习题练习，已经知道：runTime是Objective-C作为动态语言的保障。仅仅知道这些还不够，今天就来刨根问底！">
+<meta property="og:updated_time" content="2015-10-19T08:15:19.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS渐入佳境之RunTime（二）：习题练习">
-<meta name="twitter:description" content="前言通过上一篇的学习，只是大致了解什么是RunTime，但具体里面的细节还不是很了解，现在就做几道题来深究一下，正所谓实践出真理。">
+<meta name="twitter:title" content="iOS渐入佳境之RunTime（三）：刨根问底">
+<meta name="twitter:description" content="前言通过前两篇的基础概念学习和习题练习，已经知道：runTime是Objective-C作为动态语言的保障。仅仅知道这些还不够，今天就来刨根问底！">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -200,11 +199,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-iOS渐入佳境之RunTime（二）-习题练习" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-iOS渐入佳境之RunTime（三）：刨根问底" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/" class="article-date">
-  	<time datetime="2015-10-07T14:15:02.000Z" itemprop="datePublished">2015-10-07</time>
+      <a href="/2015/10/10/iOS渐入佳境之RunTime（三）：刨根问底/" class="article-date">
+  	<time datetime="2015-10-10T08:11:45.000Z" itemprop="datePublished">2015-10-10</time>
 </a>
     </div>
   
@@ -217,7 +216,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      iOS渐入佳境之RunTime（二）：习题练习
+      iOS渐入佳境之RunTime（三）：刨根问底
     </h1>
   
 
@@ -237,29 +236,55 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="前言"><strong>前言</strong></h2><p>通过上一篇的学习，只是大致了解什么是RunTime，但具体里面的细节还不是很了解，现在就做几道题来深究一下，正所谓实践出真理。</p>
+        <h2 id="前言">前言</h2><p>通过前两篇的基础概念学习和习题练习，已经知道：runTime是Objective-C作为动态语言的保障。仅仅知道这些还不够，今天就来刨根问底！</p>
 <a id="more"></a>
-<h3 id="最重要知识点："><strong>最重要知识点：</strong></h3><ol>
-<li><p>如何消息分发实现动态调用，这里的调用一般是指函数。</p>
-</li>
-<li><p>和C语言函数调用的区别。</p>
-</li>
-<li><p>class&amp;nsobject&amp;meta class的联系与区别。</p>
-</li>
-<li><p>super和self的联系</p>
-</li>
-<li><p>成员变量与属性</p>
-</li>
-<li><p>消息分发实现动态调用时出现的<strong>动态方法解析和消息转发</strong></p>
-</li>
+<h3 id="为什么需要有RunTime？"><strong>为什么需要有RunTime？</strong></h3><p>静态语言在编译和链接过后就已经决定出代码逐行代码执行的顺序，而动态语言很多是在运行再决定怎样执行，这就需要一个运行的机制来操作，这个机制就是RunTime。</p>
+<h3 id="RunTime都做了什么？"><strong>RunTime都做了什么？</strong></h3><blockquote>
+<ol>
+<li>封装：在这个库中，对象可以用C语言中的结构体表示，而方法可以用C函数来实现，另外再加上了一些额外的特性。这些结构体和函数被runtime函数封装后，我们就可以在程序运行时创建，检查，修改类、对象和它们的方法了。</li>
+<li>找出方法的最终执行代码：当程序执行[object doSomething]时，会向消息接收者(object)发送一条消息(doSomething)，runtime会根据消息接收者是否能响应该消息而做出不同的反应。这将在后面详细介绍。</li>
 </ol>
-<h2 id="习题内容"><strong>习题内容</strong></h2><p>以下是习题内容(图片转自@唐巧_boy微博):</p>
-<p><img src="http://solacode.github.io/img/1419385138428444.jpg" alt=""></p>
-<p>看到题后先看看自己能不能有思路，然后再敲代码实现，我做的时候有一些出错，但是查资料后，才理解清楚，网上有篇文章写的很好很透彻，领教了！</p>
-<blockquote>
-<p><em><a href="http://www.cocoachina.com/ios/20141224/10740.html" target="_blank" rel="external">刨根问底Objective－C Runtime</a></em></p>
 </blockquote>
-<p>希望大家有所收获。</p>
+<p>其实，用通俗一点的语言来讲就是，对于Objective-C里所有的语句结构，RunTime都进行一次重新翻译，找到最终执行代码。 </p>
+<p><strong>我们需要了解的是</strong>，RunTime对每一种语句结构怎么样翻译（其实就是底层实现），以及如何运用这个机制设计出更加动态灵活的代码结构。</p>
+<h3 id="推荐"><strong>推荐</strong></h3><p>这部分我主要推荐网上已经有的资料，我就是看这些才对RunTime有更深的认识，在此非常感谢博主和强大的网络！</p>
+<ul>
+<li>与<strong>类与对象基础数据结构</strong>相关</li>
+</ul>
+<blockquote>
+<p><em><a href="http://southpeak.github.io/blog/2014/10/25/objective-c-runtime-yun-xing-shi-zhi-lei-yu-dui-xiang/" target="_blank" rel="external">Objective-C Runtime 运行时之一：类与对象</a></em></p>
+</blockquote>
+<ul>
+<li>与<strong>成员变量与属性</strong>相关：</li>
+</ul>
+<blockquote>
+<p><em><a href="http://southpeak.github.io/blog/2014/10/30/objective-c-runtime-yun-xing-shi-zhi-er-:cheng-yuan-bian-liang-yu-shu-xing/" target="_blank" rel="external">Objective-C Runtime 运行时之二：成员变量与属性</a></em></p>
+</blockquote>
+<ul>
+<li>与<strong>方法与消息</strong>相关</li>
+</ul>
+<blockquote>
+<p><em><a href="http://southpeak.github.io/blog/2014/11/03/objective-c-runtime-yun-xing-shi-zhi-san-:fang-fa-yu-xiao-xi-zhuan-fa/" target="_blank" rel="external">Objective-C Runtime 运行时之三：方法与消息</a></em></p>
+</blockquote>
+<ul>
+<li>运用<strong>Method Swizzling</strong></li>
+</ul>
+<p>了解RunTime对于方法与消息的处理，就很容易运用Method Swizzling来修改运行时方法的实现。</p>
+<blockquote>
+<p><em><a href="http://southpeak.github.io/blog/2014/11/06/objective-c-runtime-yun-xing-shi-zhi-si-:method-swizzling/" target="_blank" rel="external">Objective-C Runtime 运行时之四：Method Swizzling</a></em></p>
+</blockquote>
+<ul>
+<li>与<strong>协议与分类</strong>有关</li>
+</ul>
+<blockquote>
+<p><em><a href="http://southpeak.github.io/blog/2014/11/08/objective-c-runtime-yun-xing-shi-zhi-wu-:xie-yi-yu-fen-lei/" target="_blank" rel="external">Objective-C Runtime 运行时之五：协议与分类</a></em></p>
+</blockquote>
+<ul>
+<li>其他：<strong>super、库相关操作、块操作、弱引用操作、宏定义、布尔值、空值、分发函数原型、Objective-C根类、局部变量存储时长、关联对象行为</strong>等等</li>
+</ul>
+<blockquote>
+<p><em><a href="http://southpeak.github.io/blog/2014/11/09/objective-c-runtime-yun-xing-shi-zhi-liu-:shi-yi/" target="_blank" rel="external">Objective-C Runtime 运行时之六：拾遗</a></em></p>
+</blockquote>
 
       
     </div>
@@ -269,18 +294,18 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/10/10/iOS渐入佳境之RunTime（三）：刨根问底/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2015/10/12/视代码为颜值-Objective-C代码规范/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          iOS渐入佳境之RunTime（三）：刨根问底
+          视代码为颜值：Objective-C代码规范
         
       </div>
     </a>
   
   
-    <a href="/2015/10/01/iOS渐入佳境之RunTime（一）/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">iOS渐入佳境之RunTime（一）：整体把握</div>
+    <a href="/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS渐入佳境之RunTime（二）：习题练习</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -309,7 +334,7 @@
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="iOS渐入佳境之RunTime（二）-习题练习" data-title="iOS渐入佳境之RunTime（二）：习题练习" data-url="http://SolaCode.github.io/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/"></div>
+	<div class="ds-thread" data-thread-key="iOS渐入佳境之RunTime（三）：刨根问底" data-title="iOS渐入佳境之RunTime（三）：刨根问底" data-url="http://SolaCode.github.io/2015/10/10/iOS渐入佳境之RunTime（三）：刨根问底/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
