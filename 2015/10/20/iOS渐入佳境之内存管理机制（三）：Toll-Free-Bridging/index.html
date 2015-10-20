@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS渐入佳境之内存管理机制（三）：Toll-Free Bridging | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="There are a number of data types in the Core Foundation framework and the Foundation framework that can be used interchangeably. This capability, called toll-free bridging, means that you can use the">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS渐入佳境之内存管理机制（三）：Toll-Free Bridging">
+<meta property="og:url" content="http://SolaCode.github.io/2015/10/20/iOS渐入佳境之内存管理机制（三）：Toll-Free-Bridging/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="There are a number of data types in the Core Foundation framework and the Foundation framework that can be used interchangeably. This capability, called toll-free bridging, means that you can use the">
+<meta property="og:updated_time" content="2015-10-20T15:09:06.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS渐入佳境之内存管理机制（三）：Toll-Free Bridging">
+<meta name="twitter:description" content="There are a number of data types in the Core Foundation framework and the Foundation framework that can be used interchangeably. This capability, called toll-free bridging, means that you can use the">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://solacode.github.io/img/myIcon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">SolaCode</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/技术">技术</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/#" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/技术/" style="font-size: 20px;">技术</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">每天都是新的开始，如果有梦想，从现在就开始为之努力。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">SolaCode</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">SolaCode</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/技术">技术</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-iOS渐入佳境之内存管理机制（三）：Toll-Free-Bridging" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/20/iOS渐入佳境之内存管理机制（三）：Toll-Free-Bridging/" class="article-date">
+  	<time datetime="2015-10-20T15:07:51.000Z" itemprop="datePublished">2015-10-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS渐入佳境之内存管理机制（三）：Toll-Free Bridging
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>There are a number of data types in the Core Foundation framework and the Foundation framework that can be used interchangeably. This capability, called toll-free bridging, means that you can use the same data type as the parameter to a Core Foundation function call or as the receiver of an Objective-C message.</p>
+</blockquote>
+<a id="more"></a> 
+<p>Toll-Free Briding保证了在程序中，可以方便和谐的使用Core Foundation类型的对象和Objective-C类型的对象。详细的内容可参考<em><a href="https://developer.apple.com/library/ios/documentation/General/Conceptual/CocoaEncyclopedia/Toll-FreeBridgin/Toll-FreeBridgin.html" target="_blank" rel="external">官方文档</a></em>。以下是官方文档中给出的一些例子：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSLocale</span> *gb<span class="built_in">NSLocale</span> = [[<span class="built_in">NSLocale</span> alloc] initWithLocaleIdentifier:<span class="string">@"en_GB"</span>];</span><br><span class="line"><span class="built_in">CFLocaleRef</span> gb<span class="built_in">CFLocale</span> = (<span class="built_in">CFLocaleRef</span>) gb<span class="built_in">NSLocale</span>;</span><br><span class="line"><span class="built_in">CFStringRef</span> cfIdentifier = <span class="built_in">CFLocaleGetIdentifier</span> (gb<span class="built_in">CFLocale</span>);</span><br><span class="line"><span class="built_in">NSLog</span>(<span class="string">@"cfIdentifier: %@"</span>, (<span class="built_in">NSString</span> *)cfIdentifier);</span><br><span class="line"><span class="comment">// logs: "cfIdentifier: en_GB"</span></span><br><span class="line"><span class="built_in">CFRelease</span>((<span class="built_in">CFLocaleRef</span>) gb<span class="built_in">NSLocale</span>);</span><br><span class="line"> </span><br><span class="line"><span class="built_in">CFLocaleRef</span> my<span class="built_in">CFLocale</span> = <span class="built_in">CFLocaleCopyCurrent</span>();</span><br><span class="line"><span class="built_in">NSLocale</span> * my<span class="built_in">NSLocale</span> = (<span class="built_in">NSLocale</span> *) my<span class="built_in">CFLocale</span>;</span><br><span class="line">[my<span class="built_in">NSLocale</span> autorelease];</span><br><span class="line"><span class="built_in">NSString</span> *nsIdentifier = [my<span class="built_in">NSLocale</span> localeIdentifier];</span><br><span class="line"><span class="built_in">CFShow</span>((<span class="built_in">CFStringRef</span>) [<span class="string">@"nsIdentifier: "</span> stringByAppendingString:nsIdentifier]);</span><br><span class="line"><span class="comment">// logs identifier for current locale</span></span><br></pre></td></tr></table></figure>
+<h3 id="渊源"><strong>渊源</strong></h3><p>在MRC时代，由于Objective-C类型的对象和Core Foundation类型的对象都是相同的release和retain操作规则，所以Toll-Free Bridging的使用比较简单，但是自从ARC加入后，Objective-C类型的对象内存管理规则改变了，而Core Foundation依然是之前的机制，换句话说，<strong>Core Foundation不支持ARC</strong>。</p>
+<p>这个时候就必须要要考虑一个问题了，在做Core Foundation与Objective-C类型转换的时候，用哪一种规则来管理对象的内存。显然，对于同一个对象，我们不能够同时用两种规则来管理，所以这里就必须要确定一件事情：哪些对象用Objective-C（也就是ARC）的规则，哪些对象用Core Foundation的规则（也就是MRC）的规则。或者说要确定对象类型转换了之后，内存管理的ownership的改变。</p>
+<blockquote>
+<p>If you cast between Objective-C and Core Foundation-style objects, you need to tell the compiler about the ownership semantics of the object using either a cast (defined in objc/runtime.h) or a Core Foundation-style macro (defined inNSObject.h)</p>
+</blockquote>
+<p>于是苹果在引入ARC之后对Toll-Free Bridging的操作也加入了对应的方法与修饰符，用来指明用哪种规则管理内存，或者说是内存管理权的归属。</p>
+<h3 id="这些方法和修饰符分别是："><strong>这些方法和修饰符分别是：</strong></h3><h4 id="__bridge（修饰符）"><strong>__bridge（修饰符）</strong></h4><p>只是声明类型转变，但是不做内存管理规则的转变。</p>
+<p>比如：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">CFStringRef</span> s1 = (__bridge <span class="built_in">CFStringRef</span>) [[<span class="built_in">NSString</span> alloc] initWithFormat:<span class="string">@"Hello, %@!"</span>, name];</span><br></pre></td></tr></table></figure>
+<p>只是做了NSString到CFStringRef的转化，但管理规则未变，依然要用Objective-C类型的ARC来管理s1，你不能用CFRelease()去释放s1。</p>
+<h4 id="__bridge_retained（修饰符）_or_CFBridgingRetain（函数）"><strong>__bridge_retained（修饰符） or CFBridgingRetain（函数）</strong></h4><p>表示将指针类型转变的同时，将内存管理的责任由原来的Objective-C交给Core Foundation来处理，也就是，将ARC转变为MRC。</p>
+<p>比如，还是上面那个例子</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *s1 = [[<span class="built_in">NSString</span> alloc] initWithFormat:<span class="string">@"Hello, %@!"</span>, name];</span><br><span class="line">￼<span class="built_in">CFStringRef</span> s2 = (__bridge_retained <span class="built_in">CFStringRef</span>)s1;</span><br><span class="line">￼<span class="comment">// do something with s2</span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">￼<span class="built_in">CFRelease</span>(s2); <span class="comment">// 注意要在使用结束后加这个</span></span><br></pre></td></tr></table></figure>
+<p>我们在第二行做了转化，这时内存管理规则由ARC变为了MRC，我们需要手动的来管理s2的内存，而对于s1，我们即使将其置为nil，也不能释放内存。</p>
+<p>等同的，我们的程序也可以写成：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> *s1 = [[<span class="built_in">NSString</span> alloc] initWithFormat:<span class="string">@"Hello, %@!"</span>, name];</span><br><span class="line">￼<span class="built_in">CFStringRef</span> s2 = (<span class="built_in">CFStringRef</span>)<span class="built_in">CFBridgingRetain</span>(s1);</span><br><span class="line">￼<span class="comment">// do something with s2</span></span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">￼<span class="built_in">CFRelease</span>(s2); <span class="comment">// 注意要在使用结束后加这个</span></span><br></pre></td></tr></table></figure>
+<h4 id="__bridge_transfer（修饰符）_or_CFBridgingRelease（函数）"><strong>__bridge_transfer（修饰符） or CFBridgingRelease（函数）</strong></h4><p>这个修饰符和函数的功能和上面那个__bridge_retained相反，它表示将管理的责任由Core Foundation转交给Objective-C，即将管理方式由MRC转变为ARC。</p>
+<p>比如：</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">CFStringRef</span> <span class="literal">result</span> = <span class="type">CFURLCreateStringByAddingPercentEscapes</span>(. . .);</span><br><span class="line">￼<span class="type">NSString</span> *s = (__bridge_transfer <span class="type">NSString</span> *)<span class="literal">result</span>;</span><br><span class="line">//<span class="keyword">or</span> <span class="type">NSString</span> *s = (<span class="type">NSString</span> *)<span class="type">CFBridgingRelease</span>(<span class="literal">result</span>);</span><br><span class="line">￼<span class="keyword">return</span> s;</span><br></pre></td></tr></table></figure>
+<p>这里我们将result的管理责任交给了ARC来处理，我们就不需要再显式地将CFRelease()了。</p>
+<h3 id="书写规范"><strong>书写规范</strong></h3><p>对了，这里你可能会注意到一个细节，和ARC中那个4个主要的修饰符（<strong>strong,</strong>weak,…）不同，这里修饰符的位置是放在类型前面的，虽然官方文档中没有说明，但看官方的头文件可以知道。小伙伴们，记得别把位置写错哦：）</p>
+<p>比如：</p>
+<figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSString</span> *s = (__bridge_transfer <span class="type">NSString</span> *)<span class="literal">result</span>;</span><br></pre></td></tr></table></figure>
+<p>大部分都是参考<em><a href="http://www.cnblogs.com/flyFreeZn/p/4264220.html" target="_blank" rel="external">iOS开发ARC内存管理技术要点</a></em>，只是改了改排版，感谢博主。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/19/iOS渐入佳境之内存管理机制（二）：ARC/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">iOS渐入佳境之内存管理机制（二）：ARC</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="iOS渐入佳境之内存管理机制（三）：Toll-Free-Bridging" data-title="iOS渐入佳境之内存管理机制（三）：Toll-Free Bridging" data-url="http://SolaCode.github.io/2015/10/20/iOS渐入佳境之内存管理机制（三）：Toll-Free-Bridging/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 SolaCode
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
