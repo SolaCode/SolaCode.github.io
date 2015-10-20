@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS渐入佳境之内存管理机制（一）：MRC | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在 iOS 5/ Mac OS X 10.7 开始导入ARC(自动引用计数)机制，利用 Xcode4.2 可以使用，所以我们现在开发时大多都会依赖ARC来管理内存，确实省去了很多手动管理内存的麻烦，重要的是但是！">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS渐入佳境之内存管理机制（一）：MRC">
+<meta property="og:url" content="http://SolaCode.github.io/2015/10/18/iOS渐入佳境之内存管理机制（一）：MRC/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在 iOS 5/ Mac OS X 10.7 开始导入ARC(自动引用计数)机制，利用 Xcode4.2 可以使用，所以我们现在开发时大多都会依赖ARC来管理内存，确实省去了很多手动管理内存的麻烦，重要的是但是！">
+<meta property="og:image" content="http://solacode.github.io/img/Screen Shot 2015-10-20 at 17.51.56.png">
+<meta property="og:image" content="http://solacode.github.io/img/Screen Shot 2015-10-20 at 17.47.19.png">
+<meta property="og:updated_time" content="2015-10-20T14:56:37.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS渐入佳境之内存管理机制（一）：MRC">
+<meta name="twitter:description" content="在 iOS 5/ Mac OS X 10.7 开始导入ARC(自动引用计数)机制，利用 Xcode4.2 可以使用，所以我们现在开发时大多都会依赖ARC来管理内存，确实省去了很多手动管理内存的麻烦，重要的是但是！">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://solacode.github.io/img/myIcon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">SolaCode</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/技术">技术</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/#" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/技术/" style="font-size: 20px;">技术</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">每天都是新的开始，如果有梦想，从现在就开始为之努力。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">SolaCode</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">SolaCode</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/技术">技术</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-iOS渐入佳境之内存管理机制（一）：MRC" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/18/iOS渐入佳境之内存管理机制（一）：MRC/" class="article-date">
+  	<time datetime="2015-10-18T14:52:34.000Z" itemprop="datePublished">2015-10-18</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS渐入佳境之内存管理机制（一）：MRC
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在 iOS 5/ Mac OS X 10.7 开始导入ARC(自动引用计数)机制，利用 Xcode4.2 可以使用，所以我们现在开发时大多都会依赖ARC来管理内存，确实省去了很多手动管理内存的麻烦，重要的是但是！</p>
+<a id="more"></a>
+<p>但是，ObjC中的内存管理机制跟C语言中指针的内容是同样重要的，要开发一个程序并不难，但是优秀的程序则更测重于内存管理，它们往往占用内存更少，运行更加流畅。如果你不了解iOS管理内存的机制，只会用ARC让系统帮你管理内存，可以说你的知识结构是有缺陷的，在解决一些程序中遇到的bug时会浪费掉大量的时间。所以学习MRC（手动管理内存）来深刻理解iOS内存管理机制还是很有必要的。</p>
+<p><strong>这次就来谈谈这看似过时的MRC。</strong></p>
+<h3 id="看这篇文章时，你可能需要Xcode关闭ARC。"><strong>看这篇文章时，你可能需要Xcode关闭ARC。</strong></h3><p>XCode关闭ARC，在Xcode中关闭ARC：项目属性—Build Settings–搜索“garbage”找到Objective-C Automatic Reference Counting设置为No即可。</p>
+<p><img src="http://solacode.github.io/img/Screen Shot 2015-10-20 at 17.51.56.png" alt=""></p>
+<p>如果需要对特定文件开启或关闭ARC，可以在工程选项中选择Targets -&gt; Build Phases -&gt; Compile Sources，在里面找到对应文件，添加flag:</p>
+<p>打开ARC：-fobjc-arc<br>关闭ARC：-fno-objc-arc</p>
+<p><img src="http://solacode.github.io/img/Screen Shot 2015-10-20 at 17.47.19.png" alt=""></p>
+<h3 id="ObjC中内存是如何管理的？"><strong>ObjC中内存是如何管理的？</strong></h3><p>ObjC中内存的管理是依赖对象引用计数器(在ObjC中每个对象内部都有一个与之对应的整数retainCount)来进行的，当一个对象在创建（通过alloc，new、copy来创建）之后它的引用计数器为1，当调用这个对象的<strong>retain</strong>方法之后引用计数器自动在原来的基础上加1，当调用这个对象的<strong>release</strong>方法之后它的引用计数器减1，如果一个对象的引用计数器为0，则系统会<strong>自动调用这个对象的dealloc方法</strong>来销毁这个对象。</p>
+<p>Objective-C的对象生成于堆之上，生成之后，需要一个指针来指向它。（注意基本类型是由系统自己管理的，放在栈上）</p>
+<p>alloc：为一个新对象分配内存，并且它的引用计数为1。调用alloc方法，你便有对新对象的所有权</p>
+<p>copy：制造一个对象的副本（克隆体），该副本的引用计数为1，调用者具有对副本的所有权</p>
+<p>new：[className new]基本等同于[[className alloc] init]；</p>
+<p>注意：</p>
+<ol>
+<li><p>retainCount为0的时候才会自动调用dealloc方法，所以可以通过dealloc方法来查看是否一个对象已经被回收，如果没有被回收则有可能造成内存泄露。</p>
+</li>
+<li><p>如果一个对象被释放之后，那么最后引用它的变量我们手动设置为nil，否则可能造成野指针错误，而且需要注意在ObjC中给空对象发送消息是不会引起错误的。</p>
+</li>
+</ol>
+<p>野指针错误形式在Xcode中通常表现为：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Thread <span class="number">1</span>：<span class="function"><span class="title">EXC_BAD_ACCESS</span><span class="params">(code=EXC_I386_GPFLT)</span></span>错误。因为你访问了一块已经不属于你的内存。</span><br></pre></td></tr></table></figure>
+<h3 id="如何管理，写代码经验？（内存释放的原则）"><strong>如何管理，写代码经验？（内存释放的原则）</strong></h3><p>谁创建alloc，谁释放，即在一个作用域内（两个大括号包起来的范围），如果有创建（alloc，new、copy），最后在右括号之前都必须release。</p>
+<h3 id="那什么时候会隐含用到retain，release方法呢？？"><strong>那什么时候会隐含用到retain，release方法呢？？</strong></h3><p>@property声明了属性a，那用b给a赋值（someObject.a=b）时就需要考虑b和a的retainCount。</p>
+<p>影响retainCount的@property参数有assign，retain，copy。默认为assign。</p>
+<p><strong>assign</strong>  </p>
+<ol>
+<li>直接赋值，不影响retainCount</li>
+<li>用于基本数据类型</li>
+</ol>
+<p><strong>retain</strong>  </p>
+<ol>
+<li>[a release] [b retain]</li>
+<li>用于NSObject的子类对象。</li>
+</ol>
+<p><strong>copy</strong>    </p>
+<ol>
+<li>[a release],但是建立一个索引计数为1的对象，这个对象和b一样，b.retainCount不变</li>
+<li>用于NSstring。</li>
+</ol>
+<p>注意，MRC只有属性标识符，没有变量标识符。变量需要retain或者copy其他变量时，直接调用其retain、copy方法。</p>
+<h3 id="自动释放池">自动释放池</h3><p>自动内存释放使用@autoreleasepool关键字声明一个代码块，如果一个对象调用了autorelase方法，那么当<strong>代码块执行完之后</strong>，在块中调用过autorelease方法的对象都会自动调用一次release方法。这样一来就起到了自动释放的作用，同时对象的销毁过程也得到了<strong>延迟</strong>（统一调用release方法）。看下面的代码：<br>这部分代码来自<a href="http://www.cnblogs.com/kenshincui/p/3870325.html" target="_blank" rel="external">这里</a></p>
+<p><strong>Person.h</strong></p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">//<span class="keyword">Person</span>.h</span><br><span class="line"></span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">@interface <span class="keyword">Person</span> : NSObject</span><br><span class="line"></span><br><span class="line">#pragma mark - 属性</span><br><span class="line">#pragma mark 姓名</span><br><span class="line">@property (nonatomic,copy) NSString *name;</span><br><span class="line"></span><br><span class="line">#pragma mark - 公共方法</span><br><span class="line">#pragma mark 带参数的构造函数</span><br><span class="line">-(<span class="keyword">Person</span> *)initWithName:(NSString *)name;</span><br><span class="line">#pragma mark 取得一个对象（静态方法）</span><br><span class="line">+(<span class="keyword">Person</span> *)personWithName:(NSString *)name;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p><strong>Person.m</strong></p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">//<span class="keyword">Person</span>.m</span><br><span class="line"></span><br><span class="line">#import <span class="string">"Person.h"</span></span><br><span class="line"></span><br><span class="line">@implementation <span class="keyword">Person</span></span><br><span class="line"></span><br><span class="line">#pragma mark - 公共方法</span><br><span class="line">#pragma mark 带参数的构造函数</span><br><span class="line">-(<span class="keyword">Person</span> *)initWithName:(NSString *)name&#123;</span><br><span class="line">    if(self=<span class="comment">[super init]</span>)&#123;</span><br><span class="line">        self.name=name;</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line">#pragma mark 取得一个对象（静态方法）</span><br><span class="line">+(<span class="keyword">Person</span> *)personWithName:(NSString *)name&#123;</span><br><span class="line">    <span class="keyword">Person</span> *p=<span class="comment">[<span class="comment">[<span class="comment">[Person alloc]</span>initWithName:name]</span> autorelease]</span>;//注意这里调用了autorelease</span><br><span class="line">    return p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#pragma mark - 覆盖方法</span><br><span class="line">#pragma mark 重写dealloc方法</span><br><span class="line">-(void)dealloc&#123;</span><br><span class="line">    NSLog(@<span class="string">"Invoke Person(%@) dealloc method."</span>,self.name);</span><br><span class="line">    <span class="comment">[super dealloc]</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+<p><strong>main.m</strong></p>
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import <span class="string">"Person.h"</span></span><br><span class="line"></span><br><span class="line">int main(int argc, const char * argv<span class="comment">[]</span>) &#123;</span><br><span class="line">    @autoreleasepool &#123;</span><br><span class="line">        <span class="keyword">Person</span> *person1=<span class="comment">[<span class="comment">[Person alloc]</span>init]</span>;</span><br><span class="line">        <span class="comment">[person1 autorelease]</span>;//调用了autorelease方法后面就不需要手动调用release方法了</span><br><span class="line">        person1.name=@<span class="string">"Kenshin"</span>;//由于autorelease是延迟释放，所以这里仍然可以使用person1</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">Person</span> *person2=<span class="comment">[<span class="comment">[<span class="comment">[Person alloc]</span>initWithName:@"Kaoru"]</span> autorelease]</span>;//调用了autorelease方法</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">Person</span> *person3=<span class="comment">[Person personWithName:@"rosa"]</span>;//内部已经调用了autorelease，所以不需要手动释放，这也符合内存管理原则，因为这里并没有alloc所以不需要release或者autorelease</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">Person</span> *person4=<span class="comment">[Person personWithName:@"jack"]</span>;</span><br><span class="line">        <span class="comment">[person4 retain]</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    /*结果：</span><br><span class="line">     Invoke <span class="keyword">Person</span>(rosa) dealloc method.</span><br><span class="line">     Invoke <span class="keyword">Person</span>(Kaoru) dealloc method.</span><br><span class="line">     Invoke <span class="keyword">Person</span>(Kenshin) dealloc method.</span><br><span class="line">     */</span><br><span class="line">    </span><br><span class="line">    return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当上面@autoreleaespool代码块执行完之后，三个对象都得到了释放，但是person4并没有释放，原因就不细说了。</p>
+<p>通过上面的例子主要想说明一个问题（关于类方法创建对象）：</p>
+<p>在ObjC中通常如果一个静态方法返回一个对象本身的话，在静态方法中我们需要调用autorelease方法，因为按照内存释放原则，在外部使用时不会进行alloc操作也就不需要再调用release或者autorelase，所以这个操作需要放到静态方法内部完成。</p>
+<p>对于自动内存释放简单总结一下：</p>
+<ol>
+<li>autorelease方法不会改变对象的引用计数器，只是将这个对象放到自动释放池中；</li>
+<li>自动释放池实质是当自动释放池销毁后调用对象的release方法，不一定就能销毁对象（例如如果一个对象的引用计数器&gt;1则此时就无法销毁，例子中的person4）；</li>
+<li>由于自动释放池最后统一销毁对象，因此如果一个操作比较占用内存（对象比较多或者对象占用资源比较多），最好不要放到自动释放池或者考虑放到多个自动释放池；</li>
+<li>ObjC中类库中的静态方法一般都不需要手动释放，内部已经调用了autorelease方法；所以静态方法命名时都不要以alloc和new开头，容易误解。</li>
+</ol>
+<h3 id="后话">后话</h3><p>下次会讨论ARC。</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/12/视代码为颜值-Objective-C代码规范/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">视代码为颜值：Objective-C代码规范</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="iOS渐入佳境之内存管理机制（一）：MRC" data-title="iOS渐入佳境之内存管理机制（一）：MRC" data-url="http://SolaCode.github.io/2015/10/18/iOS渐入佳境之内存管理机制（一）：MRC/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 SolaCode
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
