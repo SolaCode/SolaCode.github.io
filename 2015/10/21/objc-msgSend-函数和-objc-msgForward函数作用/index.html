@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>objc_msgSend()函数和_objc_msgForward函数作用 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前言1[ receiver message ];
+objective-c的这种语法被苹果称为“发消息”。与其他面向对象语言(C++/Java)的“方法调用”不同，objc的消息机制是由运行时实现、非常灵活动态。这篇文章简单记录一下objc运行时对于消息发送和转发的实现。
+这里主要涉及到两个函数objc_msgSend()函数和_objc_msgForward">
+<meta property="og:type" content="article">
+<meta property="og:title" content="objc_msgSend()函数和_objc_msgForward函数作用">
+<meta property="og:url" content="http://SolaCode.github.io/2015/10/21/objc-msgSend-函数和-objc-msgForward函数作用/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="前言1[ receiver message ];
+objective-c的这种语法被苹果称为“发消息”。与其他面向对象语言(C++/Java)的“方法调用”不同，objc的消息机制是由运行时实现、非常灵活动态。这篇文章简单记录一下objc运行时对于消息发送和转发的实现。
+这里主要涉及到两个函数objc_msgSend()函数和_objc_msgForward">
+<meta property="og:updated_time" content="2015-10-21T14:49:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="objc_msgSend()函数和_objc_msgForward函数作用">
+<meta name="twitter:description" content="前言1[ receiver message ];
+objective-c的这种语法被苹果称为“发消息”。与其他面向对象语言(C++/Java)的“方法调用”不同，objc的消息机制是由运行时实现、非常灵活动态。这篇文章简单记录一下objc运行时对于消息发送和转发的实现。
+这里主要涉及到两个函数objc_msgSend()函数和_objc_msgForward">
+  
+    <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="http://solacode.github.io/img/myIcon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">SolaCode</a></h1>
+		</hgroup>
+
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+							<li><a href="/tags/随笔">随笔</a></li>
+				        
+							<li><a href="/tags/技术">技术</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="/#" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/技术/" style="font-size: 20px;">技术</a> <a href="/tags/随笔/" style="font-size: 10px;">随笔</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">奥巴马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">卡卡的美丽传说</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">本泽马的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">吉格斯的博客</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">习大大大不同</a>
+			        
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://localhost:4000/">托蒂的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">每天都是新的开始，如果有梦想，从现在就开始为之努力。</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">SolaCode</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://solacode.github.io/img/myIcon.png" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">SolaCode</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+					<li><a href="/tags/随笔">随笔</a></li>
+		        
+					<li><a href="/tags/技术">技术</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="/#" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="/#" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="zhihu" target="_blank" href="/#" title="zhihu">zhihu</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-objc-msgSend-函数和-objc-msgForward函数作用" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/10/21/objc-msgSend-函数和-objc-msgForward函数作用/" class="article-date">
+  	<time datetime="2015-10-21T14:47:58.000Z" itemprop="datePublished">2015-10-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      objc_msgSend()函数和_objc_msgForward函数作用
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><strong>前言</strong></h2><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">[ receiver message ]</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>objective-c的这种语法被苹果称为“发消息”。与其他面向对象语言(C++/Java)的“方法调用”不同，objc的消息机制是由运行时实现、非常灵活动态。这篇文章简单记录一下objc运行时对于消息发送和转发的实现。</p>
+<p>这里主要涉及到两个函数objc_msgSend()函数和_objc_msgForward</p>
+<a id="more"></a>
+<h2 id="objc_msgSend()函数"><strong>objc_msgSend()函数</strong></h2><h3 id="作用"><strong>作用</strong></h3><p>objc运行时用于消息发送</p>
+<h3 id="如何实现消息发送："><strong>如何实现消息发送：</strong></h3><h4 id="1-_[receiver_message]会由编译器转化为以下的纯C调用。"><strong>1. [receiver message]会由编译器转化为以下的纯C调用。</strong></h4><figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objc_msgSend<span class="list">(<span class="keyword">receiver</span>, @selector<span class="list">(<span class="keyword">message</span>)</span>)</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+<p>官方文档中：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">id</span> objc_msgSend ( <span class="keyword">id</span> <span class="keyword">self</span> , SEL _cmd , . . . )</span><br></pre></td></tr></table></figure>
+<p>其中，self是消息的接受者，_cmd是selector， …是可变参数列表。根据消息的类型自动编译。</p>
+<p>当向一般对象发送消息时，调用objc_msgSend；当向super发送消息时，调用的是objc_msgSendSuper； 如果返回值是一个结构体，则会调用objc_msgSend_stret或objc_msgSendSuper_stret。</p>
+<h4 id="2-_objc_msgSend都做了什么，才动态绑定到应该执行的函数。"><strong>2. objc_msgSend都做了什么，才动态绑定到应该执行的函数。</strong></h4><p>首先，先需要了解：</p>
+<p>编译器构建每个类和对象时所采用的数据结构。每个类都包含以下两个必要元素：</p>
+<p>一个指向父类的指针isa。通过该指针，对象可以找到它所属的类，也就找到了其全部父类。<br>一个调度表（dispatch table）。该调度表将类的selector与方法的实际内存地址关联起来。</p>
+<h5 id="objc_msgSend的真正行为："><strong>objc_msgSend的真正行为：</strong></h5><ol>
+<li>objc_msgSend方法根据对象的isa指针找到对象的类，然后在类的调度表（dispatch table）中查找selector。</li>
+<li>如果无法找到selector，objc_msgSend通过指向父类的指针找到父类，并在父类的调度表（dispatch table）中查找selector，以此类推直到NSObject类。</li>
+<li>一旦查找到selector，objc_msgSend方法根据调度表的内存地址调用该实现。</li>
+<li>为了保证消息发送与执行的效率，系统会将全部selector和使用过的方法的内存地址缓存起来。每个类都有一个独立的缓存，缓存包含有当前类自己的selector以及继承自父类的selector。</li>
+<li>查找调度表（dispatch table）前，消息发送系统首先检查receiver对象的缓存。缓存命中的情况下，消息发送（messaging）比直接调用方法（function call）只慢一点点点点。</li>
+</ol>
+<p><strong>那么如果直到NSObject类都没有找到该selector呢？这就需要消息转发了！用_objc_msgForward函数指针代替要执行的函数指针。然后执行_objc_msgForward函数。</strong></p>
+<h2 id="_objc_msgForward函数"><strong>_objc_msgForward函数</strong></h2><h3 id="作用："><strong>作用：</strong></h3><p>objc运行时用于消息转发</p>
+<h3 id="如何实现"><strong>如何实现</strong></h3><p>_objc_msgForward消息转发做了如下几件事：</p>
+<ol>
+<li><p>调用resolveInstanceMethod:方法，允许用户在此时为该Class动态添加实现。如果有实现了，则调用并返回。如果仍没实现，继续下面的动作。</p>
+</li>
+<li><p>调用forwardingTargetForSelector:方法，尝试找到一个能响应该消息的对象。如果获取到，则直接转发给它。如果返回了nil，继续下面的动作。</p>
+</li>
+<li><p>调用methodSignatureForSelector:方法，尝试获得一个方法签名。如果获取不到，则直接调用doesNotRecognizeSelector抛出异常。</p>
+</li>
+<li><p>调用forwardInvocation:方法，将地3步获取到的方法签名包装成Invocation传入，如何处理就在这里面了。</p>
+</li>
+</ol>
+<p>上面这4个方法均是模板方法，开发者可以override，由runtime来调用。最常见的实现消息转发，就是重写方法3和4，吞掉一个消息或者代理给其他对象都是没问题的。</p>
+<h2 id="实践"><strong>实践</strong></h2><p>1.如果想要自己观察一遍消息是如何转发的，可以开启调试模式、打印出所有运行时发送的消息。在代码中执行<code>(void)instrumentObjcMessageSends(YES);</code>方法，之后，运行时发送的所有消息都会打印到/tmp/msgSend-xxxx文件里了。</p>
+<p>2.看clang翻译的代码需要明白这些：</p>
+<ul>
+<li><p>id 指代objc中的对象，每个对象的在内存的结构并不是确定的，但其首地址指向的肯定是isa。通过isa指针，运行时就能获取到objc_class。</p>
+</li>
+<li><p>objc_class 表示对象的Class，它的结构是确定的，由编译器生成。</p>
+</li>
+<li><p>SEL 表示选择器，这是一个不透明结构体。但是实际上，通常可以把它理解为一个字符串。例如printf(“%s”,@selector(isEqual:))会打印出”isEqual:”。运行时维护着一张SEL的表，将相同字符串的方法名映射到唯一一个SEL。  通过sel_registerName(char *name)方法，可以查找到这张表中方法名对应的SEL。苹果提供了一个语法糖@selector用来方便地调用该函数。</p>
+</li>
+<li><p>IMP 是一个函数指针。objc中的方法最终会被转换成纯C的函数，IMP就是为了表示这些函数的地址。</p>
+</li>
+</ul>
+<blockquote>
+<p><em><a href="http://www.tuicool.com/articles/iEbmUr" target="_blank" rel="external">Objective-C中的消息与消息转发</a></em></p>
+<p><em><a href="http://dangpu.sinaapp.com/?p=119" target="_blank" rel="external">Objective-C消息机制的原理</a></em></p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/10/21/Runtime如何实现weak属性？/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Runtime如何实现weak属性？</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="objc-msgSend-函数和-objc-msgForward函数作用" data-title="objc_msgSend()函数和_objc_msgForward函数作用" data-url="http://SolaCode.github.io/2015/10/21/objc-msgSend-函数和-objc-msgForward函数作用/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2015 SolaCode
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
