@@ -226,7 +226,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="前言"><strong>前言</strong></h2><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">[ receiver message ]</span><span class="comment">;</span></span><br></pre></td></tr></table></figure>
+        <h2 id="前言"><strong>前言</strong></h2><p><code>[ receiver message ];</code></p>
 <p>objective-c的这种语法被苹果称为“发消息”。与其他面向对象语言(C++/Java)的“方法调用”不同，objc的消息机制是由运行时实现、非常灵活动态。这篇文章简单记录一下objc运行时对于消息发送和转发的实现。</p>
 <p>这里主要涉及到两个函数objc_msgSend()函数和_objc_msgForward</p>
       
@@ -286,7 +286,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Runtime_如何实现_weak_属性">Runtime 如何实现 weak 属性</h2><h2 id="weak的生命周期">weak的生命周期</h2><p>我们都知道weak表示的是一个弱引用，这个引用不会增加对象的引用计数，并且在所指向的对象被释放之后，weak指针会被设置的为nil。weak引用通常是用于处理循环引用的问题，如代理及block的使用中，相对会较多的使用到weak。</p>
+        <h2 id="weak的生命周期">weak的生命周期</h2><p>我们都知道weak表示的是一个弱引用，这个引用不会增加对象的引用计数，并且在所指向的对象被释放之后，weak指针会被设置的为nil。weak引用通常是用于处理循环引用的问题，如代理及block的使用中，相对会较多的使用到weak。</p>
 <p>之前对weak的实现略有了解，知道它的一个基本的生命周期，但具体是怎么实现的，了解得不是太清晰。今天又翻了翻《Objective-C高级编程》关于__weak的讲解，在此做个笔记。</p>
       
     </div>
