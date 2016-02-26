@@ -204,7 +204,7 @@
   
     <div class="article-meta">
       <a href="/2016/02/26/HScrollerDemo/" class="article-date">
-  	<time datetime="2016-02-26T09:32:37.000Z" itemprop="datePublished">2016-02-26</time>
+  	<time datetime="2016-02-26T09:38:58.000Z" itemprop="datePublished">2016-02-26</time>
 </a>
     </div>
   
@@ -226,14 +226,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="HScroller_Demo_分享">HScroller Demo 分享</h2><p>最近在github上分享了个demo,<a href="https://github.com/SolaCode/HScroller" target="_blank" rel="external">git@github.com:SolaCode/HScroller.git</a>,主要实现的功能就是类似优酷首页上方自动侧滑控件。</p>
-<p><img src="http://solacode.github.io/img/IMG_2409.PNG" alt=""></p>
-<p>demo的效果图如下：<br><img src="http://solacode.github.io/img/result.gif" alt="效果图"></p>
-<p>这个控件的主要涉及思想类似TableView,HorizontalScrollerDelegate也主要仿照TableView的Delegate。</p>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@required</span></span><br><span class="line"><span class="comment">// 询问delegate在滚动区域有多少个图被显示</span></span><br><span class="line">- (NSInteger)<span class="string">numberOfViewsForHorizontalScroller:</span>(HorizontalScroller *)scroller;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回索引是index的视图</span></span><br><span class="line">- (UIView *)<span class="string">horizontalScroller:</span>(HorizontalScroller *)scroller <span class="string">viewAtIndex:</span>(<span class="typename">int</span>)index;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当索引是index的视图被点击后通知delegate</span></span><br><span class="line">- (<span class="typename">void</span>)<span class="string">horizontalScroller:</span>(HorizontalScroller *)scroller <span class="string">clickedViewAtIndex:</span>(<span class="typename">int</span>)index;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@optional</span></span><br><span class="line"><span class="comment">// 设置默认视图的index，如果没有被delegate实现则返回的是0</span></span><br><span class="line">- (NSInteger)<span class="string">initialViewIndexForHorizontalScroller:</span>(HorizontalScroller *)scroller;</span><br></pre></td></tr></table></figure>
-<p>在ViewController需要使用HScroller时除了实现该协议外，使用方法如下：</p>
-<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HorizontalScroller *scroller = [[HorizontalScroller alloc] initWithFrame:yourFrame]<span class="comment">;</span></span><br><span class="line">scroller.delegate = self<span class="comment">;</span></span><br><span class="line">[scroller reload]<span class="comment">;//刷新视图</span></span><br><span class="line">[scroller shouldAutoShow:YES]<span class="comment">;//设置是否自动滑动</span></span><br><span class="line">[self.view addSubview:scroller]<span class="comment">;</span></span><br></pre></td></tr></table></figure>
-
+        <h2 id="HScroller_Demo_分享">HScroller Demo 分享</h2><p>最近在github上分享了个demo,<a href="https://github.com/SolaCode/HScroller">git@github.com:SolaCode/HScroller.git</a>,主要实现的功能就是类似优酷首页上方自动侧滑控件。</p>
       
     </div>
     
@@ -246,6 +239,10 @@
 
       
 
+      
+        <p class="article-more-link">
+          <a  href="/2016/02/26/HScrollerDemo/#more">more >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
