@@ -200,6 +200,117 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-HScroller-Demo-分享" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/02/26/HScroller-Demo-分享/" class="article-date">
+  	<time datetime="2016-02-26T09:34:23.000Z" itemprop="datePublished">2016-02-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/26/HScroller-Demo-分享/">HScroller Demo 分享</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
+    <article id="post-HScrollerDemo" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/02/26/HScrollerDemo/" class="article-date">
+  	<time datetime="2016-02-26T09:32:37.000Z" itemprop="datePublished">2016-02-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/02/26/HScrollerDemo/">HScroller Demo 分享</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="HScroller_Demo_分享">HScroller Demo 分享</h2><p>最近在github上分享了个demo,<a href="https://github.com/SolaCode/HScroller" target="_blank" rel="external">git@github.com:SolaCode/HScroller.git</a>,主要实现的功能就是类似优酷首页上方自动侧滑控件。</p>
+<p><img src="http://solacode.github.io/img/IMG_2409.PNG" alt=""></p>
+<p>demo的效果图如下：<br><img src="http://solacode.github.io/img/result.gif" alt="效果图"></p>
+<p>这个控件的主要涉及思想类似TableView,HorizontalScrollerDelegate也主要仿照TableView的Delegate。</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="annotation">@required</span></span><br><span class="line"><span class="comment">// 询问delegate在滚动区域有多少个图被显示</span></span><br><span class="line">- (NSInteger)<span class="string">numberOfViewsForHorizontalScroller:</span>(HorizontalScroller *)scroller;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 返回索引是index的视图</span></span><br><span class="line">- (UIView *)<span class="string">horizontalScroller:</span>(HorizontalScroller *)scroller <span class="string">viewAtIndex:</span>(<span class="typename">int</span>)index;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 当索引是index的视图被点击后通知delegate</span></span><br><span class="line">- (<span class="typename">void</span>)<span class="string">horizontalScroller:</span>(HorizontalScroller *)scroller <span class="string">clickedViewAtIndex:</span>(<span class="typename">int</span>)index;</span><br><span class="line"></span><br><span class="line"><span class="annotation">@optional</span></span><br><span class="line"><span class="comment">// 设置默认视图的index，如果没有被delegate实现则返回的是0</span></span><br><span class="line">- (NSInteger)<span class="string">initialViewIndexForHorizontalScroller:</span>(HorizontalScroller *)scroller;</span><br></pre></td></tr></table></figure>
+<p>在ViewController需要使用HScroller时除了实现该协议外，使用方法如下：</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HorizontalScroller *scroller = [[HorizontalScroller alloc] initWithFrame:yourFrame]<span class="comment">;</span></span><br><span class="line">scroller.delegate = self<span class="comment">;</span></span><br><span class="line">[scroller reload]<span class="comment">;//刷新视图</span></span><br><span class="line">[scroller shouldAutoShow:YES]<span class="comment">;//设置是否自动滑动</span></span><br><span class="line">[self.view addSubview:scroller]<span class="comment">;</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+  
     <article id="post-objc-msgSend-函数和-objc-msgForward()函数作用" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -670,122 +781,6 @@
 
 
   
-    <article id="post-iOS渐入佳境之RunTime（二）-习题练习" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/" class="article-date">
-  	<time datetime="2015-10-07T14:15:02.000Z" itemprop="datePublished">2015-10-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/">iOS渐入佳境之RunTime（二）：习题练习</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="前言"><strong>前言</strong></h2><p>通过上一篇的学习，只是大致了解什么是RunTime，但具体里面的细节还不是很了解，现在就做几道题来深究一下，正所谓实践出真理。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/10/07/iOS渐入佳境之RunTime（二）-习题练习/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-iOS渐入佳境之RunTime（一）" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/10/01/iOS渐入佳境之RunTime（一）/" class="article-date">
-  	<time datetime="2015-10-01T10:33:49.000Z" itemprop="datePublished">2015-10-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/10/01/iOS渐入佳境之RunTime（一）/">iOS渐入佳境之RunTime（一）：整体把握</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="简介"><strong>简介</strong></h2><p>RunTime简称运行时。就是<strong>系统在运行的时候的一些机制</strong>，其中最主要的是消息机制。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/技术/">技术</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/10/01/iOS渐入佳境之RunTime（一）/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -796,7 +791,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2015 SolaCode
+    		&copy; 2016 SolaCode
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

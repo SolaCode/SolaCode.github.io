@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://SolaCode.github.io/2015/10/20/iOS渐入佳境之内存管理机制（三）：Toll-Free-Bridging/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="There are a number of data types in the Core Foundation framework and the Foundation framework that can be used interchangeably. This capability, called toll-free bridging, means that you can use the">
-<meta property="og:updated_time" content="2015-10-20T15:09:06.000Z">
+<meta property="og:updated_time" content="2015-10-22T11:34:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="iOS渐入佳境之内存管理机制（三）：Toll-Free Bridging">
 <meta name="twitter:description" content="There are a number of data types in the Core Foundation framework and the Foundation framework that can be used interchangeably. This capability, called toll-free bridging, means that you can use the">
@@ -265,7 +265,7 @@
 <h3 id="书写规范"><strong>书写规范</strong></h3><p>对了，这里你可能会注意到一个细节，和ARC中那个4个主要的修饰符（<strong>strong,</strong>weak,…）不同，这里修饰符的位置是放在类型前面的，虽然官方文档中没有说明，但看官方的头文件可以知道。小伙伴们，记得别把位置写错哦：）</p>
 <p>比如：</p>
 <figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">NSString</span> *s = (__bridge_transfer <span class="type">NSString</span> *)<span class="literal">result</span>;</span><br></pre></td></tr></table></figure>
-<p>大部分都是参考<em><a href="http://www.cnblogs.com/flyFreeZn/p/4264220.html" target="_blank" rel="external">iOS开发ARC内存管理技术要点</a></em>，只是改了改排版，感谢博主。</p>
+<p>这部分基本都是参考<em><a href="http://www.cnblogs.com/flyFreeZn/p/4264220.html" target="_blank" rel="external">iOS开发ARC内存管理技术要点</a></em>这篇博文，只是改了改排版，便于整理，感谢博主。</p>
 
       
     </div>
@@ -340,7 +340,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2015 SolaCode
+    		&copy; 2016 SolaCode
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
